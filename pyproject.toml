@@ -46,7 +46,6 @@ coverage = "*"
 bandit = "*"
 flake8 = "*"
 isort = "*"
-tox = "*"
 
 
 [tool.bandit]
