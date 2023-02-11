@@ -25,7 +25,19 @@ include_trailing_comma = true
 
 [tool.black]
 line_length = 88
-
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
 
 [tool.poetry.dev-dependencies]
 black = "*"
@@ -35,6 +47,12 @@ bandit = "*"
 flake8 = "*"
 isort = "*"
 tox = "*"
+
+
+[tool.bandit]
+exclude_dirs = []
+tests = ["B201", "B301"]
+skips = ["B101", "B601"]
 
 [build-system]
 requires = ["poetry-core"]
