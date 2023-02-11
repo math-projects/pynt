@@ -1,6 +1,6 @@
 """test add"""
 
-from pynt.test import add
+from pynt.dummy import add
 
 
 def test_add():
