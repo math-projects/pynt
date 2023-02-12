@@ -27,3 +27,6 @@ class Factorize:
             self.factorization_ = []
 
             return
+
+    def factorize_big(self) -> None:
+        pass
