@@ -6,6 +6,12 @@ from pynt.core.sieve import SieveOfEratosthenes
 def test_sieve_normal():
     """Test normal prime generation"""
 
+    sieve = SieveOfEratosthenes(size=1)
+    sieve.generate_primes()
+
+    assert isinstance(sieve.primes_, list)
+    assert len(sieve.primes_) == 0
+
     sieve = SieveOfEratosthenes(size=10)
     sieve.generate_primes()
 
@@ -23,6 +29,12 @@ def test_sieve_normal():
 
 def test_sieve_smallest_factor():
     """Test prime generation using smallest factor sieve"""
+
+    sieve = SieveOfEratosthenes(size=1)
+    sieve.generate_smallest_prime_factors()
+
+    assert isinstance(sieve.smallest_factors_, list)
+    assert len(sieve.smallest_factors_) == 0
 
     sieve = SieveOfEratosthenes(size=10)
     sieve.generate_smallest_prime_factors()
