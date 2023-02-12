@@ -1,0 +1,6 @@
+coverage:
+  precision: 2
+  round: down
+  range: "95...100"
+  # notify:
+  # notification blocks. See: https://docs.codecov.io/docs/codecovyml-reference#section-coverage-notify
