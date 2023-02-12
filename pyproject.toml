@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "pynt"
-version = "1.0.0"
+name = "py3nt"
+version = "1.1.0"
 description = "A Number Theory Library for Python 3"
 authors = [
-    "Masum Billal <billalmasum93@gmail.com>",
-    "Samin Riasat <nayel71@gmail.com>",
+  "Masum Billal <billalmasum93@gmail.com>",
+  "Samin Riasat <nayel71@gmail.com>",
 ]
 
 license = "LICENSE"
