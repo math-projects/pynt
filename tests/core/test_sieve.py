@@ -1,6 +1,6 @@
 """Test sieve"""
 
-from pynt.core.sieve import SieveOfEratosthenes
+from py3nt.core.sieve import SieveOfEratosthenes
 
 
 def test_sieve_normal():

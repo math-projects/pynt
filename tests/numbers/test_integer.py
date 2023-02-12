@@ -1,6 +1,6 @@
 """Test Integer"""
 
-from pynt.numbers.integer import Integer
+from py3nt.numbers.integer import Integer
 
 
 def test_integer():
