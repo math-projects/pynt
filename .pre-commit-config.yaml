@@ -12,6 +12,10 @@ repos:
     rev: 6.0.0
     hooks:
       - id: flake8
+        exclude: tox.ini, .tox, env, venv, .git, build, dist
+        args:
+          - "--max-line-length=91"
+          - "--ignore=E129,E2"
   - repo: https://github.com/pycqa/isort
     rev: 5.12.0
     hooks:

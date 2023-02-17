@@ -1,32 +1,74 @@
 """Factorize integers"""
 
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 import numpy as np
 
+from py3nt.core.base import BaseFactorizer
+
 
 @dataclass
-class Factorize:
+class Factorizer(BaseFactorizer):
     """Factorize positive integers"""
 
-    n: int
+    def _factorize_with_sieve(self, n: int) -> dict[int, int]:
+        if not self.sieve:
+            raise ValueError("Sieve cannot be None")
 
-    factorization_: list = field(init=False)
+        if n < 1e7:
+            return self.factorize_logn(n)
 
-    def __post_init__(self) -> None:
-        self.factorization_ = []
+        if len(self.sieve.primes_) < 1:
+            self.sieve.generate_primes()
 
-    def factorize_small(self) -> None:
-        if self.n < 1:
-            self.factorization_ = [{1: 1}]
+        primes = self.sieve.primes_
+        root = int(np.floor(np.sqrt(n)))
 
-            return
+        factorization = {}
 
-        if np.greater(self.n, 1e14) is True:
-            self.factorization_ = []
+        for prime in primes:
+            if prime > root:
+                break
 
-            return
+            if (n % prime) == 0:
+                multiplicity = 0
+                while (n % prime) == 0:
+                    n //= prime
+                    multiplicity += 1
 
-    def factorize_big(self) -> None:
-        pass
+                factorization[prime] = multiplicity
+
+        if n > 1:
+            factorization[n] = 1
+
+        return factorization
+
+    def factorize_small(self, n: int) -> dict[int, int]:
+        if self.sieve:
+            return self._factorize_with_sieve(n=n)
+
+        if n < 2:
+            return {1: 1}
+
+        root = int(np.floor(np.sqrt(n)))
+
+        factorization = {}
+
+        for i in np.arange(start=2, step=1, stop=root + 1):
+            if (n % i) == 0:
+                prime_factor = i
+                multiplicity = 0
+
+                while (n % prime_factor) == 0:
+                    n //= prime_factor
+                    multiplicity += 1
+                factorization[prime_factor] = multiplicity
+
+        if n > 1:
+            factorization[n] = 1
+
+        return factorization
+
+    def factorize_big(self, n: int) -> dict[int, int]:
+        return {}

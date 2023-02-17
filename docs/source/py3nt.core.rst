@@ -4,6 +4,14 @@ py3nt.core package
 Submodules
 ----------
 
+py3nt.core.base module
+----------------------
+
+.. automodule:: py3nt.core.base
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 py3nt.core.factorize module
 ---------------------------
 

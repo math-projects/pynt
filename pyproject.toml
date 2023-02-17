@@ -10,7 +10,7 @@ readme = "README.md"
 repository = "https://github.com/math-projects/pynt"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.11"
 numpy = ">=1.24.2"
 
 [tool.poetry.group.docs]

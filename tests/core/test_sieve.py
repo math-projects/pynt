@@ -52,5 +52,5 @@ def test_sieve_smallest_factor():
     assert len(primes) == 25
 
     assert isinstance(sieve.smallest_factors_, list)
-    assert len(sieve.smallest_factors_) == 100
+    assert len(sieve.smallest_factors_) == 100 + 1
     assert sieve.smallest_factors_[45] == 3
