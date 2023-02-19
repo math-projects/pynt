@@ -37,7 +37,7 @@ class TestFactorizer:
 
         assert isinstance(factorizer, BaseFactorizer)
 
-        factorization = factorizer.factorize_small(10)
+        factorization = factorizer.factorize(10)
 
         assert isinstance(factorization, dict)
         assert (2 in factorization) and (5 in factorization)
@@ -53,7 +53,7 @@ class TestFactorizer:
 
         assert isinstance(factorizer, BaseFactorizer)
 
-        factorization = factorizer.factorize_small(n=int(1e7 + 5))
+        factorization = factorizer.factorize(n=int(1e7 + 5))
 
         assert isinstance(factorization, dict)
         assert 5 in factorization
@@ -61,11 +61,11 @@ class TestFactorizer:
     def test_factorize_without_sieve_small(self) -> None:
         """Test factorization of small numbers without sieve"""
 
-        factorizer = Factorizer(sieve=None)
+        factorizer = Factorizer()
 
         assert isinstance(factorizer, BaseFactorizer)
 
-        factorization = factorizer.factorize_small(n=111)
+        factorization = factorizer.factorize(n=111)
         assert isinstance(factorization, dict)
 
         assert 3 in factorization and 37 in factorization
