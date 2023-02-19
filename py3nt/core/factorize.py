@@ -19,7 +19,7 @@ class Factorizer(BaseFactorizer):
             raise ValueError("Invalid sieve")
 
         if isinstance(self.sieve, SieveOfEratosthenesOptimized):
-            if self.sieve.smallest_factors_.shape[0] < self.max_logn_limit:
+            if self.sieve.largest_prime_factors_.shape[0] < self.max_logn_limit:
                 if self.max_logn_limit <= MAX_LOGN_FACTORIZATION_LIMIT:
                     self.sieve.generate_primes()
 

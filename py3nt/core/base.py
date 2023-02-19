@@ -70,7 +70,7 @@ class BaseFactorizer(ABC):
         """
 
         factorization: dict[int, int] = {}
-        smallest_factors = getattr(self.sieve, "smallest_factors_")
+        smallest_factors = getattr(self.sieve, "largest_prime_factors_")
 
         while n > 1:
             prime_factor = smallest_factors[n]
