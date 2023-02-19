@@ -11,6 +11,17 @@ Subpackages
    py3nt.functions
    py3nt.numbers
 
+Submodules
+----------
+
+py3nt.defaults module
+---------------------
+
+.. automodule:: py3nt.defaults
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

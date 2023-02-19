@@ -1,56 +1,54 @@
 """Test sieve"""
 
-from py3nt.core.sieve import SieveOfEratosthenes
+import numpy as np
+
+from py3nt.core.sieve import SieveOfEratosthenes, SieveOfEratosthenesOptimized
 
 
 def test_sieve_normal():
     """Test normal prime generation"""
 
-    sieve = SieveOfEratosthenes(size=1)
+    sieve = SieveOfEratosthenes(limit=1)
     sieve.generate_primes()
 
-    assert isinstance(sieve.primes_, list)
-    assert len(sieve.primes_) == 0
+    assert isinstance(sieve.primes_, np.ndarray)
+    assert sieve.num_primes == 0
+    assert sieve.max_prime_count == 0
 
-    sieve = SieveOfEratosthenes(size=10)
+    sieve = SieveOfEratosthenes(limit=10)
     sieve.generate_primes()
 
     primes = sieve.primes_
 
-    assert isinstance(primes, list)
-    assert primes == [2, 3, 5, 7]
+    assert isinstance(primes, np.ndarray)
+    assert sieve.num_primes == 4
+    assert primes.tolist() == [2, 3, 5, 7]
 
-    sieve = SieveOfEratosthenes(size=100)
+    sieve = SieveOfEratosthenes(limit=100)
     sieve.generate_primes()
     primes = sieve.primes_
 
     assert len(primes) == 25
 
 
-def test_sieve_smallest_factor():
-    """Test prime generation using smallest factor sieve"""
+def test_sieve_optimized():
+    """Test smallest prime factor sieve"""
 
-    sieve = SieveOfEratosthenes(size=1)
-    sieve.generate_smallest_prime_factors()
+    sieve = SieveOfEratosthenesOptimized(limit=1)
+    sieve.generate_primes()
 
-    assert isinstance(sieve.smallest_factors_, list)
-    assert len(sieve.smallest_factors_) == 0
+    assert isinstance(sieve.primes_, np.ndarray)
+    assert sieve.num_primes == 0
 
-    sieve = SieveOfEratosthenes(size=10)
-    sieve.generate_smallest_prime_factors()
+    sieve = SieveOfEratosthenesOptimized(limit=100)
+    sieve.generate_primes()
 
-    primes = sieve.primes_
+    assert isinstance(sieve.primes_, np.ndarray)
+    assert sieve.num_primes == 25
 
-    assert isinstance(primes, list)
-    assert isinstance(primes, list)
-    assert primes == [2, 3, 5, 7]
+    assert hasattr(sieve, "smallest_factors_")
+    smallest_factors = getattr(sieve, "smallest_factors_")
 
-    sieve = SieveOfEratosthenes(size=100)
-    sieve.generate_smallest_prime_factors()
-    primes = sieve.primes_
-
-    assert len(primes) == 25
-
-    assert isinstance(sieve.smallest_factors_, list)
-    assert len(sieve.smallest_factors_) == 100
-    assert sieve.smallest_factors_[45] == 3
+    assert isinstance(smallest_factors, np.ndarray)
+    assert smallest_factors.shape[0] == 100 + 1
+    assert smallest_factors[45] == 3

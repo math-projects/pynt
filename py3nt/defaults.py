@@ -1,0 +1,6 @@
+"""Some default values"""
+
+LARGEST_SMALL_NUMBER = int(1e14)
+BIG_NUMBER = int(1e70)
+MAX_LOGN_FACTORIZATION_LIMIT = int(1e7)
+DEFAULT_SIEVE_LIMIT = int(1e7)

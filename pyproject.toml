@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py3nt"
-version = "1.2.2"
+version = "1.2.8"
 description = "A Number Theory Library for Python 3"
 authors = ["Masum Billal <billalmasum93@gmail.com>"]
 
@@ -10,7 +10,7 @@ readme = "README.md"
 repository = "https://github.com/math-projects/pynt"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 numpy = ">=1.24.2"
 
 [tool.poetry.group.docs]

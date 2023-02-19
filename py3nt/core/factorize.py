@@ -1,32 +1,74 @@
 """Factorize integers"""
 
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 import numpy as np
 
+from py3nt.core.base import BaseFactorizer, BaseSieve
+from py3nt.core.sieve import SieveOfEratosthenesOptimized
+from py3nt.defaults import MAX_LOGN_FACTORIZATION_LIMIT
+
 
 @dataclass
-class Factorize:
+class Factorizer(BaseFactorizer):
     """Factorize positive integers"""
 
-    n: int
+    def _factorize_with_sieve(self, n: int) -> dict[int, int]:
+        if not isinstance(self.sieve, BaseSieve):
+            raise ValueError("Invalid sieve")
 
-    factorization_: list = field(init=False)
+        if isinstance(self.sieve, SieveOfEratosthenesOptimized):
+            if self.sieve.smallest_factors_.shape[0] < self.max_logn_limit:
+                if self.max_logn_limit <= MAX_LOGN_FACTORIZATION_LIMIT:
+                    self.sieve.generate_primes()
 
-    def __post_init__(self) -> None:
-        self.factorization_ = []
+                    return self.factorize_logn(n=n)
 
-    def factorize_small(self) -> None:
-        if self.n < 1:
-            self.factorization_ = [{1: 1}]
+        primes = self.sieve.primes_
+        root = int(np.floor(np.sqrt(n)))
 
-            return
+        factorization = {}
 
-        if np.greater(self.n, 1e14) is True:
-            self.factorization_ = []
+        for prime in primes:
+            if prime > root:
+                break
 
-            return
+            if (n % prime) == 0:
+                multiplicity = 0
+                while (n % prime) == 0:
+                    n //= prime
+                    multiplicity += 1
 
-    def factorize_big(self) -> None:
-        pass
+                factorization[prime] = multiplicity
+
+        if n > 1:
+            factorization[n] = 1
+
+        return factorization
+
+    def factorize_small(self, n: int) -> dict[int, int]:
+        if self.sieve:
+            return self._factorize_with_sieve(n=n)
+
+        root = int(np.floor(np.sqrt(n)))
+
+        factorization = {}
+
+        for i in np.arange(start=2, step=1, stop=root + 1):
+            if (n % i) == 0:
+                prime_factor = i
+                multiplicity = 0
+
+                while (n % prime_factor) == 0:
+                    n //= prime_factor
+                    multiplicity += 1
+                factorization[prime_factor] = multiplicity
+
+        if n > 1:
+            factorization[n] = 1
+
+        return factorization
+
+    def factorize_big(self, n: int) -> dict[int, int]:
+        return {}
