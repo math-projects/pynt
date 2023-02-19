@@ -29,8 +29,13 @@ class SieveOfEratosthenes(BaseSieve):
                 self.primes_[prime_count] = i
                 prime_count += 1
 
-                for j in np.arange(start=i * i, stop=self.limit + 1, step=2 * i):
-                    flags[j] = 1
+                stop = int(np.floor(self.limit / i))
+
+                for j in np.arange(start=i, stop=stop + 1, step=2):
+                    non_prime = j * i
+                    if non_prime > self.limit:
+                        break
+                    flags[non_prime] = 1
 
         self.num_primes = prime_count
         self.primes_ = self.primes_[:prime_count]
@@ -66,10 +71,10 @@ class SieveOfEratosthenesOptimized(BaseSieve):
                 self.primes_[prime_count] = i
                 prime_count += 1
 
-                for j in np.arange(start=i * i, stop=self.limit + 1, step=2 * i):
-                    if self.smallest_factors_[j] == j:
-                        self.smallest_factors_[j] = i
+                stop = int(np.floor(self.limit / i))
+                for j in np.arange(start=i, stop=stop + 1, step=2):
+                    not_prime = j * i
+                    if self.smallest_factors_[not_prime] == not_prime:
+                        self.smallest_factors_[not_prime] = i
 
         self.num_primes = prime_count
-        print(self.primes_)
-        print(self.smallest_factors_)
