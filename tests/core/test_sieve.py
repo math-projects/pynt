@@ -46,9 +46,9 @@ def test_sieve_optimized():
     assert isinstance(sieve.primes_, np.ndarray)
     assert sieve.num_primes == 25
 
-    assert hasattr(sieve, "smallest_factors_")
-    smallest_factors = getattr(sieve, "smallest_factors_")
+    assert hasattr(sieve, "largest_prime_factors_")
+    smallest_factors = getattr(sieve, "largest_prime_factors_")
 
     assert isinstance(smallest_factors, np.ndarray)
     assert smallest_factors.shape[0] == 100 + 1
-    assert smallest_factors[45] == 3
+    assert smallest_factors[45] == 5

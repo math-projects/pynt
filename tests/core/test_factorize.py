@@ -31,7 +31,7 @@ class TestFactorizer:
         sieve = SieveOfEratosthenesOptimized(limit=10)
         sieve.generate_primes()
 
-        assert hasattr(sieve, "smallest_factors_")
+        assert hasattr(sieve, "largest_prime_factors_")
 
         factorizer = Factorizer(sieve=sieve)
 

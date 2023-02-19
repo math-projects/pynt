@@ -1,5 +1,5 @@
-pynt
-====
+py3nt
+=====
 
 .. toctree::
    :maxdepth: 4
