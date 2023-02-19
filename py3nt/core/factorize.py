@@ -5,7 +5,9 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from py3nt.core.base import BaseFactorizer
+from py3nt.core.base import BaseFactorizer, BaseSieve
+from py3nt.core.sieve import SieveOfEratosthenesOptimized
+from py3nt.defaults import MAX_LOGN_FACTORIZATION_LIMIT
 
 
 @dataclass
@@ -13,14 +15,15 @@ class Factorizer(BaseFactorizer):
     """Factorize positive integers"""
 
     def _factorize_with_sieve(self, n: int) -> dict[int, int]:
-        if not self.sieve:
-            raise ValueError("Sieve cannot be None")
+        if not isinstance(self.sieve, BaseSieve):
+            raise ValueError("Invalid sieve")
 
-        if n < 1e7:
-            return self.factorize_logn(n)
+        if isinstance(self.sieve, SieveOfEratosthenesOptimized):
+            if self.sieve.smallest_factors_.shape[0] < self.max_logn_limit:
+                if self.max_logn_limit <= MAX_LOGN_FACTORIZATION_LIMIT:
+                    self.sieve.generate_primes()
 
-        if len(self.sieve.primes_) < 1:
-            self.sieve.generate_primes()
+                    return self.factorize_logn(n=n)
 
         primes = self.sieve.primes_
         root = int(np.floor(np.sqrt(n)))
@@ -47,9 +50,6 @@ class Factorizer(BaseFactorizer):
     def factorize_small(self, n: int) -> dict[int, int]:
         if self.sieve:
             return self._factorize_with_sieve(n=n)
-
-        if n < 2:
-            return {1: 1}
 
         root = int(np.floor(np.sqrt(n)))
 

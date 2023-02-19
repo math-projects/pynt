@@ -6,50 +6,58 @@ from typing import Optional
 
 import numpy as np
 
-from py3nt.defaults import DEFAULT_SIEVE_LIMIT, MAX_LOGN_FACTORIZATION_LIMIT
+from py3nt.defaults import LARGEST_SMALL_NUMBER, MAX_LOGN_FACTORIZATION_LIMIT
 
 
 @dataclass
 class BaseSieve(ABC):
     """Abstract base class for sieve"""
 
-    size: int
-    logn_limit: Optional[int] = field(default=DEFAULT_SIEVE_LIMIT)
-
-    primes_: list = field(init=False)
-    smallest_factors_: list = field(init=False)
+    limit: int
+    primes_: np.ndarray = field(init=False)
+    num_primes: int = field(init=False, default=0)
 
     def __post_init__(self) -> None:
         self.clear()
-
-        if not self.logn_limit:
-            self.logn_limit = self.size
-
-        if self.logn_limit and (self.logn_limit > MAX_LOGN_FACTORIZATION_LIMIT):
-            raise ValueError(
-                f"{self.logn_limit} is greater than {MAX_LOGN_FACTORIZATION_LIMIT}"
-            )
 
     @abstractmethod
     def generate_primes(self) -> None:
         """Generate primes when size is small"""
 
-    @abstractmethod
-    def generate_smallest_prime_factors(self) -> None:
-        """Generate smallest prime factors up to size."""
-
     def clear(self) -> None:
         """Reset to initial state."""
 
-        self.primes_ = []
-        self.smallest_factors_ = []
+        self.primes_ = np.empty(shape=(0,))
+        self.num_primes = 0
+
+    @property
+    def max_prime_count(self) -> int:
+        """Maximum number of primes possible up to n.
+
+        :param n: Upper bound for primes.
+        :type n: ``int``
+        :return: An upper bound on number of primes not exceeding ``n``.
+        :rtype: int
+        """
+
+        if self.limit < 2:
+            return 0
+
+        tmp = np.log(self.limit)
+        res = 1.0 + (1.28 / tmp)
+        res *= self.limit / tmp
+        res = int(np.floor(res))
+
+        return res
 
 
 @dataclass
 class BaseFactorizer(ABC):
     """Abstract base class for factorization"""
 
-    sieve: Optional[BaseSieve]
+    sieve: Optional[BaseSieve] = field(default=None)
+    max_logn_limit: int = field(default=MAX_LOGN_FACTORIZATION_LIMIT)
+    largest_small_number: int = field(default=LARGEST_SMALL_NUMBER)
 
     def factorize_logn(self, n: int) -> dict[int, int]:
         """Factorize a positive integer in logn complexity.
@@ -61,16 +69,11 @@ class BaseFactorizer(ABC):
         :rtype: ``dict``
         """
 
-        if not self.sieve:
-            raise ValueError("sieve cannot be empty")
-
         factorization: dict[int, int] = {}
-
-        if len(self.sieve.smallest_factors_) < 1:
-            self.sieve.generate_smallest_prime_factors()
+        smallest_factors = getattr(self.sieve, "smallest_factors_")
 
         while n > 1:
-            prime_factor = self.sieve.smallest_factors_[n]
+            prime_factor = smallest_factors[n]
 
             multiplcity = 0
             while (n % prime_factor) == 0:

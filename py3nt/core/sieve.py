@@ -1,7 +1,7 @@
 """Generate primes using sieve"""
 
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 
@@ -15,42 +15,61 @@ class SieveOfEratosthenes(BaseSieve):
     def generate_primes(self) -> None:
         """Generate primes and set it in ``self.primes_``"""
 
-        flags = np.zeros(shape=(self.size,), dtype=np.uint8)
+        flags = np.zeros(shape=(self.limit + 1,), dtype=np.byte)
 
-        if self.size < 2:
+        if (not self.limit) or self.limit < 2:
             return
 
-        self.primes_ = [2]
-        for i in np.arange(start=3, stop=self.size, step=2):
+        self.primes_ = np.empty(shape=(self.max_prime_count,), dtype=int)
+
+        prime_count = 1
+        self.primes_[0] = 2
+        for i in np.arange(start=3, stop=self.limit + 1, step=2):
             if flags[i] == 0:
-                self.primes_.append(i)
-                for j in np.arange(start=i * i, stop=self.size, step=2 * i):
+                self.primes_[prime_count] = i
+                prime_count += 1
+
+                for j in np.arange(start=i * i, stop=self.limit + 1, step=2 * i):
                     flags[j] = 1
 
-    def generate_smallest_prime_factors(self) -> None:
+        self.num_primes = prime_count
+        self.primes_ = self.primes_[:prime_count]
+
+
+@dataclass
+class SieveOfEratosthenesOptimized(BaseSieve):
+    """We can store smallest prime factors for logn factorization"""
+
+    smallest_factors_: np.ndarray = field(init=False)
+
+    def generate_primes(self) -> None:
         """Generate primes using smallest prime factors"""
 
-        if not self.logn_limit:
-            raise ValueError("logn_limit cannot be None")
-
-        if self.logn_limit < 2:
+        if self.limit < 2:
             return
 
-        smallest_factors = np.zeros(shape=(self.logn_limit + 1,), dtype=int)
-        self.primes_ = [2]
+        self.smallest_factors_ = np.empty(shape=(self.limit + 1,), dtype=int)
 
-        for i in np.arange(start=0, stop=self.logn_limit + 1):
-            smallest_factors[i] = i
+        self.primes_ = np.empty(shape=(self.max_prime_count,))
+        self.primes_[0] = 2
 
-        for i in np.arange(start=2, stop=self.logn_limit + 1, step=2):
-            smallest_factors[i] = 2
+        prime_count = 1
 
-        for i in np.arange(start=3, stop=self.logn_limit + 1, step=2):
-            if smallest_factors[i] == i:
-                self.primes_.append(i)
+        for i in np.arange(start=0, stop=self.limit + 1):
+            self.smallest_factors_[i] = i
 
-                for j in np.arange(start=3 * i, stop=self.logn_limit + 1, step=2 * i):
-                    if smallest_factors[j] == j:
-                        smallest_factors[j] = i
+        for i in np.arange(start=2, stop=self.limit + 1, step=2):
+            self.smallest_factors_[i] = 2
 
-        self.smallest_factors_ = list(smallest_factors)
+        for i in np.arange(start=3, stop=self.limit + 1, step=2):
+            if self.smallest_factors_[i] == i:
+                self.primes_[prime_count] = i
+                prime_count += 1
+
+                for j in np.arange(start=i * i, stop=self.limit + 1, step=2 * i):
+                    if self.smallest_factors_[j] == j:
+                        self.smallest_factors_[j] = i
+
+        self.num_primes = prime_count
+        print(self.primes_)
+        print(self.smallest_factors_)
