@@ -66,3 +66,27 @@ class SieveOfEratosthenesOptimized(BaseSieve):
                 self.largest_prime_factors_[i * i : self.limit + 1 : 2 * i] = i
 
         self.num_primes = prime_count
+
+
+class NumberOfPrimeFactorSieve(BaseSieve):
+    """Sieve to get number of prime factors as well"""
+
+    omega_: np.ndarray
+
+    def generate_primes(self) -> None:
+        flags = np.zeros(shape=(self.limit + 1,), dtype=np.byte)
+
+        self.num_primes = 0
+        self.primes_ = np.zeros(shape=(self.max_prime_count,), dtype=int)
+        self.omega_ = np.zeros(shape=(self.limit + 1,), dtype=int)
+
+        for i in np.arange(2, self.limit + 1):
+            if flags[i] == 0:
+                self.primes_[self.num_primes] = i
+                self.num_primes += 1
+                self.omega_[i] = 1
+
+                flags[2 * i : self.limit + 1 : i] = 1
+                self.omega_[2 * i : self.limit + 1 : i] += 1
+
+        self.primes_ = self.primes_[: self.num_primes]
