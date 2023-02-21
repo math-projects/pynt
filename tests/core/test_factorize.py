@@ -3,17 +3,17 @@
 
 import pytest
 
-from py3nt.core.factorize import BaseFactorizer, Factorizer
-from py3nt.core.sieve import SieveOfEratosthenes, SieveOfEratosthenesOptimized
+from py3nt.core.factorize import FactorizationFactory
+from py3nt.core.sieve import SieveOfEratosthenesOptimized
 
 
 class TestFactorizer:
-    """Test Factorizer class"""
+    """Test FactorizationFactory class"""
 
     def test_factorize_invalid(self) -> None:
         """Test factorize invalid cases"""
 
-        factorizer = Factorizer()
+        factorizer = FactorizationFactory(N=100, with_sieve=False)
 
         with pytest.raises(ValueError):
             factorizer.factorize(n=0)
@@ -33,9 +33,9 @@ class TestFactorizer:
 
         assert hasattr(sieve, "largest_prime_factors_")
 
-        factorizer = Factorizer(sieve=sieve)
+        factorizer = FactorizationFactory(N=20, with_sieve=True)
 
-        assert isinstance(factorizer, BaseFactorizer)
+        assert isinstance(factorizer, FactorizationFactory)
 
         factorization = factorizer.factorize(10)
 
@@ -46,12 +46,9 @@ class TestFactorizer:
     def test_factorize_with_sieve_small(self) -> None:
         """Test factorization of small numbers with sieve"""
 
-        sieve = SieveOfEratosthenes(limit=int(1e7 + 100))
-        sieve.generate_primes()
+        factorizer = FactorizationFactory(N=int(1e10), with_sieve=True)
 
-        factorizer = Factorizer(sieve=sieve)
-
-        assert isinstance(factorizer, BaseFactorizer)
+        assert isinstance(factorizer, FactorizationFactory)
 
         factorization = factorizer.factorize(n=int(1e7 + 5))
 
@@ -61,9 +58,9 @@ class TestFactorizer:
     def test_factorize_without_sieve_small(self) -> None:
         """Test factorization of small numbers without sieve"""
 
-        factorizer = Factorizer()
+        factorizer = FactorizationFactory(N=200, with_sieve=False)
 
-        assert isinstance(factorizer, BaseFactorizer)
+        assert isinstance(factorizer, FactorizationFactory)
 
         factorization = factorizer.factorize(n=111)
         assert isinstance(factorization, dict)
@@ -80,6 +77,6 @@ class TestFactorizer:
     def test_factorize_big(self) -> None:
         """Test factorization of large numbers"""
 
-        factorizer = Factorizer()
+        factorizer = FactorizationFactory(N=int(1e50))
         factorization = factorizer.factorize(n=int(1e15))
         assert isinstance(factorization, dict)
