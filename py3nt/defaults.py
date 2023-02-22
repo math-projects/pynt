@@ -71,3 +71,7 @@ LARGEST_SMALL_NUMBER = defaults.get_largest_small_number()
 BIGGEST_NUMBER = defaults.get_biggest_number()
 MAX_LOGN_FACTORIZATION_LIMIT = defaults.get_max_logn_factorization_limit()
 DEFAULT_SIEVE_LIMIT = defaults.get_default_sieve_limit()
+
+
+MULTIPLICATION_ATTRIBUTE = "__mul__"
+CLASS_ATTRIBUTE = "__class__"
