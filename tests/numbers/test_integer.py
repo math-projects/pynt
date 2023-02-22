@@ -23,3 +23,4 @@ def test_integer():
 
     assert pow(Integer(-12), 2, 100) == 44
     assert Integer(-12).multiply_modular(other=-12, modulus=100) == 44
+    assert pow(Integer(-13), 2) == 169
