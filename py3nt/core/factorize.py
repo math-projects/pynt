@@ -77,8 +77,6 @@ class SieveSqrtFactorization(BaseSieveFactorization):
 class LognSieveFactorization(BaseSieveFactorization):
     """Factorize small numbers in logn complexity"""
 
-    # max_logn_limit: int = field(default=MAX_LOGN_FACTORIZATION_LIMIT)
-
     def __post_init__(self) -> None:
         prime_factors = getattr(self.sieve, LOGN_PRIME_FACTOR_FIELD)
 
