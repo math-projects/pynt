@@ -20,6 +20,14 @@ py3nt.core.factorize module
    :undoc-members:
    :show-inheritance:
 
+py3nt.core.factorizer module
+----------------------------
+
+.. automodule:: py3nt.core.factorizer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 py3nt.core.primality\_test module
 ---------------------------------
 
