@@ -8,6 +8,7 @@ from py3nt.core.sieve import (
     SieveOfEratosthenes,
     SieveOfEratosthenesOptimized,
 )
+from py3nt.defaults import LOGN_PRIME_FACTOR_FIELD
 
 
 def test_sieve_normal():
@@ -51,11 +52,13 @@ def test_sieve_optimized():
     sieve = SieveOfEratosthenesOptimized(limit=100)
     sieve.generate_primes()
 
+    assert hasattr(sieve, "primes_")
+
     assert isinstance(sieve.primes_, np.ndarray)
     assert sieve.num_primes == 25
 
-    assert hasattr(sieve, "largest_prime_factors_")
-    smallest_factors = getattr(sieve, "largest_prime_factors_")
+    assert hasattr(sieve, LOGN_PRIME_FACTOR_FIELD)
+    smallest_factors = getattr(sieve, LOGN_PRIME_FACTOR_FIELD)
 
     assert isinstance(smallest_factors, np.ndarray)
     assert smallest_factors.shape[0] == 100 + 1

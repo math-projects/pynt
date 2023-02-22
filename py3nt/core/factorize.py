@@ -8,6 +8,7 @@ import numpy as np
 from py3nt.core.base import BaseFactorization, BaseSieveFactorization
 from py3nt.core.sieve import SieveOfEratosthenes, SieveOfEratosthenesOptimized
 from py3nt.defaults import (
+    BIGGEST_NUMBER,
     LARGEST_SMALL_NUMBER,
     LOGN_PRIME_FACTOR_FIELD,
     MAX_LOGN_FACTORIZATION_LIMIT,
@@ -44,11 +45,6 @@ class SieveSqrtFactorization(BaseSieveFactorization):
     """Factorize positive integers"""
 
     def __post_init__(self) -> None:
-        if not isinstance(self.sieve, SieveOfEratosthenes):
-            raise ValueError(
-                f"{self.sieve.__class__} is not of type {SieveOfEratosthenes.__class__}"
-            )
-
         if self.sieve.primes_.shape[0] < 1:
             self.sieve.generate_primes()
 
@@ -84,17 +80,9 @@ class LognSieveFactorization(BaseSieveFactorization):
     # max_logn_limit: int = field(default=MAX_LOGN_FACTORIZATION_LIMIT)
 
     def __post_init__(self) -> None:
-        if not isinstance(self.sieve, SieveOfEratosthenesOptimized):
-            raise ValueError(
-                f"{self.sieve.__class__} is not of type {SieveOfEratosthenesOptimized.__class__}"
-            )
+        prime_factors = getattr(self.sieve, LOGN_PRIME_FACTOR_FIELD)
 
-        if not hasattr(self.sieve, LOGN_PRIME_FACTOR_FIELD):
-            raise ValueError(
-                f"{self.sieve.__class__} does not have attribute {LOGN_PRIME_FACTOR_FIELD}"
-            )
-
-        if self.sieve.largest_prime_factors_.shape[0] < self.sieve.limit:
+        if prime_factors.shape[0] < self.sieve.limit:
             self.sieve.generate_primes()
 
     def factorize(self, n: int) -> dict[int, int]:
@@ -125,18 +113,22 @@ class LognSieveFactorization(BaseSieveFactorization):
 
 @dataclass
 class BigIntFactorization(BaseFactorization):
-    """Factorize large positive integers up to 10^70"""
+    """Factorize large positive integers not exceeding a default biggest number."""
 
     def factorize(self, n) -> dict[int, int]:
-        print("bigint")
+        if np.greater(n, BIGGEST_NUMBER):
+            raise ValueError(
+                f"{n} is greater than the current default biggest number: {BIGGEST_NUMBER}"
+            )
+
         return {}
 
 
 @dataclass
 class FactorizationFactory:
-    """Factorize positive integers not exceeding 1e70.
+    """Factorize positive integers not exceeding the default biggest number.
 
-    :raises ValueError: If n is negative or exceeds 10^70.
+    :raises ValueError: If n is negative or exceeds the default biggest number.
     :param N: Maximum value of positive integer to factorize.
     :type N: ``int``:
     :param with_sieve: True if sieve is used to factorize. Otherwise False.
@@ -167,8 +159,5 @@ class FactorizationFactory:
             return {1: 1}
 
         factorizer = self._get_factorizer_class()
-
-        if not isinstance(factorizer, BaseFactorization):
-            raise ValueError("factorizer is invalid")
 
         return factorizer.factorize(n=n)

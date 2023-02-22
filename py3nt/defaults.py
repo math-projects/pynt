@@ -8,10 +8,13 @@ LOGN_PRIME_FACTOR_FIELD = "largest_prime_factors_"
 class Defaults:
     """Set default values"""
 
-    _LARGEST_SMALL_NUMBER = int(1e14)
-    _BIGGEST_NUMBER = int(1e70)
-    _MAX_LOGN_FACTORIZATION_LIMIT = int(1e7)
-    _DEFAULT_SIEVE_LIMIT = int(1e7)
+    _LARGEST_SMALL_NUMBER = 0
+    _BIGGEST_NUMBER = 0
+    _MAX_LOGN_FACTORIZATION_LIMIT = 0
+    _DEFAULT_SIEVE_LIMIT = 0
+
+    def __init__(self) -> None:
+        self.reset()
 
     def get_largest_small_number(self) -> int:
         """Get the current default largest small number for sieve sqrt factorization."""
@@ -41,6 +44,7 @@ class Defaults:
                 f"""{new_biggest_number} must be greater than
                 largest small number: {self._LARGEST_SMALL_NUMBER}"""
             )
+        self._BIGGEST_NUMBER = new_biggest_number
 
     def get_max_logn_factorization_limit(self) -> int:
         """Get the current default maximum logn factorization limit."""
@@ -52,10 +56,18 @@ class Defaults:
 
         return self._DEFAULT_SIEVE_LIMIT
 
+    def reset(self) -> None:
+        """Reset default values"""
+
+        self._LARGEST_SMALL_NUMBER = int(1e14)
+        self._BIGGEST_NUMBER = int(1e70)
+        self._MAX_LOGN_FACTORIZATION_LIMIT = int(1e7)
+        self._DEFAULT_SIEVE_LIMIT = int(1e7)
+
 
 defaults = Defaults()
 
 LARGEST_SMALL_NUMBER = defaults.get_largest_small_number()
-BIG_NUMBER = defaults.get_biggest_number()
+BIGGEST_NUMBER = defaults.get_biggest_number()
 MAX_LOGN_FACTORIZATION_LIMIT = defaults.get_max_logn_factorization_limit()
 DEFAULT_SIEVE_LIMIT = defaults.get_default_sieve_limit()

@@ -13,21 +13,12 @@ class BaseSieve(ABC):
     """Abstract base class for sieve"""
 
     limit: int
-    primes_: np.ndarray = field(init=False)
-    num_primes: int = field(init=False, default=0)
-
-    def __post_init__(self) -> None:
-        self.clear()
+    primes_: np.ndarray = field(default=np.empty(shape=(0,)))
+    num_primes: int = field(default=0)
 
     @abstractmethod
     def generate_primes(self) -> None:
         """Generate primes when size is small"""
-
-    def clear(self) -> None:
-        """Reset to initial state."""
-
-        self.primes_ = np.empty(shape=(0,))
-        self.num_primes = 0
 
     @property
     def max_prime_count(self) -> int:
@@ -72,7 +63,3 @@ class BaseSieveFactorization(BaseFactorization):
 
     sieve: BaseSieve
     largest_small_number: int = field(default=LARGEST_SMALL_NUMBER)
-
-    def __post_init__(self) -> None:
-        if self.sieve.primes_.shape[0] < 1:
-            self.sieve.generate_primes()

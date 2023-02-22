@@ -80,3 +80,7 @@ class TestFactorizer:
         factorizer = FactorizationFactory(N=int(1e50))
         factorization = factorizer.factorize(n=int(1e15))
         assert isinstance(factorization, dict)
+
+        factorizer = FactorizationFactory(N=int(1e70))
+        with pytest.raises(ValueError):
+            factorization = factorizer.factorize(n=int(1e80))
