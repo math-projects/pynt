@@ -38,4 +38,7 @@ class Integer(int):
         return remainder
 
     def __pow__(self, exponent: int, modulus=None):
+        if not modulus:
+            return pow(int(self), int(exponent))
+
         return pow(int(self), int(exponent), int(modulus))
