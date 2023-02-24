@@ -1,5 +1,7 @@
 """Test Integer"""
 
+import random
+
 import numpy as np
 import pytest
 
@@ -50,7 +52,8 @@ class TestInteger:
         with pytest.raises(ValueError):
             Integer((1 << 32) + 1).brent_pollard_rho_factor()
 
-        for n in np.random.randint(low=(1 << 50), high=(1 << 60), size=5):
+        for _ in range(5):
+            n = random.randint((1 << 50), (1 << 60))
             factor = Integer(n).brent_pollard_rho_factor(max_iter=10)
             assert factor > 1
             assert (n % factor) == 0
