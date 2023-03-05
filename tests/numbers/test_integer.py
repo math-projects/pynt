@@ -32,6 +32,8 @@ class TestInteger:
         assert pow(Integer(-13), 2) == 169
 
     def test_pollard_rho_factor(self) -> None:
+        """Test Pollard's rho factorization"""
+
         assert Integer(100).pollard_rho_factor(a=2, c=1) == 2
 
         with pytest.raises(ValueError):
@@ -47,6 +49,8 @@ class TestInteger:
         assert factor == 1
 
     def test_brent_pollard_rho(self) -> None:
+        """Test Brent-Pollard's rho factorization"""
+
         assert Integer(1 << 40).brent_pollard_rho_factor() == 2
 
         with pytest.raises(ValueError):
