@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   py3nt.congruence
    py3nt.core
    py3nt.functions
    py3nt.numbers

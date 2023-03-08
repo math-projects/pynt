@@ -30,6 +30,7 @@ class TestInteger:
         assert pow(Integer(-12), 2, 100) == 44
         assert Integer(-12).multiply_modular(other=-12, modulus=100) == 44
         assert pow(Integer(-13), 2) == 169
+        assert pow(Integer(12), 12001100, mod=100) == 76
 
     def test_pollard_rho_factor(self) -> None:
         """Test Pollard's rho factorization"""
