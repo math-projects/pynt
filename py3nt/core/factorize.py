@@ -17,7 +17,14 @@ from py3nt.defaults import (
 
 @dataclass
 class NaiveSqrtFactorization(BaseFactorization):
-    """Factorize small numbers in sqrt(n) complexity"""
+    """
+    Factorize small numbers in sqrt(n) complexity.
+
+    Methods
+    -------
+    factorize:
+        Factorize a positive integer using naive sqrt method.
+    """
 
     def factorize(self, n: int) -> dict[int, int]:
         root = int(np.floor(np.sqrt(1.0 * n)))
@@ -42,14 +49,16 @@ class NaiveSqrtFactorization(BaseFactorization):
 
 @dataclass
 class SieveSqrtFactorization(BaseSieveFactorization):
-    """Factorize positive integers"""
+    r"""
+    Factorization using naive sieve and primes not exceeding :math:`\sqrt{n}`.
 
-    def __post_init__(self) -> None:
-        if self.sieve.primes_.shape[0] < 1:
-            self.sieve.generate_primes()
+    Methods
+    -------
+    factorize:
+        Factorize a positive integer using sieve generated primes not exceeding :math:`\sqrt{n}`.
+    """
 
     def factorize(self, n: int) -> dict[int, int]:
-        print("sieve sqrt")
         primes = self.sieve.primes_
         root = int(np.floor(np.sqrt(1.0 * n)))
 
@@ -75,24 +84,16 @@ class SieveSqrtFactorization(BaseSieveFactorization):
 
 @dataclass
 class LognSieveFactorization(BaseSieveFactorization):
-    """Factorize small numbers in logn complexity"""
+    """
+    Factorize small numbers in logn complexity.
 
-    def __post_init__(self) -> None:
-        prime_factors = getattr(self.sieve, LOGN_PRIME_FACTOR_FIELD)
-
-        if prime_factors.shape[0] < self.sieve.limit:
-            self.sieve.generate_primes()
+    Methods
+    -------
+    factorize:
+        Factorize a positive integer using pre-stored prime factors.
+    """
 
     def factorize(self, n: int) -> dict[int, int]:
-        """Factorize a positive integer in logn complexity.
-
-        :param n: Positive integer to factorize.
-        :type n: ```int```
-        :raises ValueError: If sieve is ``None``.
-        :return: Dictionary of prime factor, multiplicity as key-value pairs.
-        :rtype: ``dict``
-        """
-
         factorization: dict[int, int] = {}
         prime_factors = getattr(self.sieve, LOGN_PRIME_FACTOR_FIELD)
 
@@ -111,7 +112,14 @@ class LognSieveFactorization(BaseSieveFactorization):
 
 @dataclass
 class BigIntFactorization(BaseFactorization):
-    """Factorize large positive integers not exceeding a default biggest number."""
+    """
+    Factorize large positive integers not exceeding a default biggest number.
+
+    Methods
+    -------
+    factorize:
+        Factorize a positive integer using Pollard's rho algorithm.
+    """
 
     def factorize(self, n) -> dict[int, int]:
         if np.greater(n, BIGGEST_NUMBER):
@@ -126,15 +134,27 @@ class BigIntFactorization(BaseFactorization):
 class FactorizationFactory:
     """Factorize positive integers not exceeding the default biggest number.
 
-    :raises ValueError: If n is negative or exceeds the default biggest number.
-    :param N: Maximum value of positive integer to factorize.
-    :type N: ``int``:
-    :param with_sieve: True if sieve is used to factorize. Otherwise False.
-    :type with_sieve: ``bool``
+    Methods
+    -------
+    factorize:
+        Factorize a positive integer.
+
+    Raises
+    ------
+    ValueError
+        If n is negative or exceeds the default biggest number.
     """
 
     N: int
     with_sieve: bool = field(default=True)
+
+    factorizer: BaseFactorization = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.factorizer = self._get_factorizer_class()
+
+        if isinstance(self.factorizer, BaseSieveFactorization):
+            self.factorizer.regenerate_primes()
 
     def _get_factorizer_class(self) -> BaseFactorization:
         if not self.with_sieve:
@@ -143,12 +163,30 @@ class FactorizationFactory:
             return LognSieveFactorization(sieve=SieveOfEratosthenesOptimized(limit=self.N))
         if np.less_equal(self.N, LARGEST_SMALL_NUMBER):
             return SieveSqrtFactorization(
-                sieve=SieveOfEratosthenes(limit=int(np.sqrt(self.N)))
+                sieve=SieveOfEratosthenes(limit=int(np.floor(np.sqrt(self.N * 1.0))))
             )
         return BigIntFactorization()
 
     def factorize(self, n: int) -> dict[int, int]:
-        """Factorize positive integers"""
+        """Factorize positive integers.
+
+        Parameters
+        ----------
+        n : ``int``
+            A positive integer.
+
+        Returns
+        -------
+        dict[int, int]
+            Key value pairs of prime factorization.
+            Keys are prime factors.
+            Values are multiplicities of corresponding prime factors.
+
+        Raises
+        ------
+        ValueError
+            If :math:`n` is not positive.
+        """
 
         if n < 1:
             raise ValueError("n must be a positive integer")
@@ -156,6 +194,4 @@ class FactorizationFactory:
         if n == 1:
             return {1: 1}
 
-        factorizer = self._get_factorizer_class()
-
-        return factorizer.factorize(n=n)
+        return self.factorizer.factorize(n=n)

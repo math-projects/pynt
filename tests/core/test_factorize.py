@@ -46,14 +46,19 @@ class TestFactorizer:
     def test_factorize_with_sieve_small(self) -> None:
         """Test factorization of small numbers with sieve"""
 
-        factorizer = FactorizationFactory(N=int(1e10), with_sieve=True)
+        factorizer = FactorizationFactory(N=int(1e10))
 
-        assert isinstance(factorizer, FactorizationFactory)
-
-        factorization = factorizer.factorize(n=int(1e7 + 5))
+        factorization = factorizer.factorize(n=int(1e2 + 5))
 
         assert isinstance(factorization, dict)
         assert 5 in factorization
+        assert 3 in factorization
+        assert 7 in factorization
+        for key in factorization:
+            assert factorization[key] == 1
+
+        factorization = factorizer.factorize(n=37)
+        assert factorization == {37: 1}
 
     def test_factorize_without_sieve_small(self) -> None:
         """Test factorization of small numbers without sieve"""

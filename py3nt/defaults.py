@@ -6,7 +6,24 @@ LOGN_PRIME_FACTOR_FIELD = "largest_prime_factors_"
 
 
 class Defaults:
-    """Set default values"""
+    """
+    Set default values
+
+    Methods
+    -------
+    get_largest_small_number:
+        Get the current default largest small number for sieve sqrt factorization.
+    set_largest_small_number:
+        Set the largest small number to ``new_largest_small_number``.
+    get_biggest_number:
+        Get the current default biggest number you can factorize.
+    set_biggest_number:
+        Set the biggest number to ``new_biggest_number``
+    get_max_logn_factorization_limit:
+        Get the current default maximum logn factorization limit.
+    get_default_sieve_limit:
+        Get the current default sieve limit.
+    """
 
     _LARGEST_SMALL_NUMBER = 0
     _BIGGEST_NUMBER = 0

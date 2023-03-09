@@ -21,6 +21,7 @@ release = "1.1.0"
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
+    "numpydoc",
 ]
 
 templates_path = ["_templates"]
