@@ -13,8 +13,12 @@ class BaseSieve(ABC):
     """Abstract base class for sieve"""
 
     limit: int
-    primes_: np.ndarray = field(default=np.empty(shape=(0,)))
+    primes_: np.ndarray = field(init=False)
     num_primes: int = field(default=0)
+
+    def __post_init__(self) -> None:
+        self.primes_ = np.empty(shape=(0,))
+        self.num_primes = 0
 
     @abstractmethod
     def generate_primes(self) -> None:
