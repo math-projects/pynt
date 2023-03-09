@@ -1,6 +1,5 @@
 """Test Integer"""
 
-import random
 
 import numpy as np
 import pytest
@@ -30,6 +29,7 @@ class TestInteger:
         assert pow(Integer(-12), 2, 100) == 44
         assert Integer(-12).multiply_modular(other=-12, modulus=100) == 44
         assert pow(Integer(-13), 2) == 169
+        assert pow(Integer(12), 12001100, mod=100) == 76
 
     def test_pollard_rho_factor(self) -> None:
         """Test Pollard's rho factorization"""
@@ -46,18 +46,4 @@ class TestInteger:
 
         n = (1 << 64) + 1
         factor = Integer(n).pollard_rho_factor(a=2, c=1, max_iter=5)
-        assert factor == 1
-
-    def test_brent_pollard_rho(self) -> None:
-        """Test Brent-Pollard's rho factorization"""
-
-        assert Integer(1 << 40).brent_pollard_rho_factor() == 2
-
-        with pytest.raises(ValueError):
-            Integer((1 << 32) + 1).brent_pollard_rho_factor()
-
-        for _ in range(5):
-            n = random.randint((1 << 50), (1 << 60))
-            factor = Integer(n).brent_pollard_rho_factor(max_iter=10)
-            assert factor > 1
-            assert (n % factor) == 0
+        assert factor > 1

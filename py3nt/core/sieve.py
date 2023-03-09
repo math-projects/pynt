@@ -41,6 +41,7 @@ class SieveOfEratosthenesOptimized(BaseSieve):
     largest_prime_factors_: np.ndarray = field(init=False)
 
     def __post_init__(self) -> None:
+        super().__post_init__()
         self.largest_prime_factors_ = np.empty(shape=(0), dtype=int)
 
     def generate_primes(self) -> None:
