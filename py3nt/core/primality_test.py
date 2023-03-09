@@ -10,20 +10,30 @@ from py3nt.defaults import MAX_LOGN_FACTORIZATION_LIMIT
 
 
 def is_prime_naive(n: int) -> bool:
-    """Check if ``n`` is prime using square root method.
+    r"""Test numbers not exceeding :math:`\sqrt{n}` for primality.
 
-    :param n: Integer to check.
-    :type n: ``int``
-    :raises ValueError: If ``n`` is negative.
-    :return: ``True`` if :math:`n` is a prime. Otherwise, ``False``.
-    :rtype: ``bool``
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer for primality testing.
+
+    Returns
+    -------
+    ``bool``
+        ``True`` if :math:`n` is prime, ``False`` otherwise.
+
+    Raises
+    ------
+    ValueError
+        If :math:`n` is not positive.
     """
 
-    if n < 0:
-        raise ValueError("n cannot be negative")
+    if n <= 0:
+        raise ValueError("n must be positive.")
 
     if n < 2:
         return False
+
     if n < 4:
         return True
 
@@ -42,12 +52,17 @@ def is_prime_naive(n: int) -> bool:
 def miller_rabin(n: int, n_witnesses: int = 5) -> bool:
     """Miller-Rabin primality test.
 
-    :param n: An integer.
-    :type n: ``int``
-    :param n_witnesses: Number of witnesses for the test, defaults to 5.
-    :type n_witnesses: ``int``, optional
-    :return: Whether :math:`n` is prime or not.
-    :rtype: ``bool``
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer.
+    n_witnesses : ``int``, optional
+        Number of witnesses for the test, by default 5.
+
+    Returns
+    -------
+    ``bool``
+        ``True`` if :math:`n` is prime, ``False`` otherwise.
     """
 
     if n <= MAX_LOGN_FACTORIZATION_LIMIT:
@@ -67,12 +82,17 @@ def miller_rabin(n: int, n_witnesses: int = 5) -> bool:
 def solovay_strassen(n: int, max_iter: int = 10) -> bool:
     """Solovay-Strassen primality test.
 
-    :param n: An integer.
-    :type n: ``int``
-    :param max_iter: Number of retries, defaults to 10.
-    :type max_iter: ``int``, optional
-    :return: Whether :math:`n` is an integer.
-    :rtype: ``bool``
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer.
+    max_iter : ``int``, optional
+        Number of retries, by default 10
+
+    Returns
+    -------
+    ``bool``
+        ``True`` if :math:`n` is prime, ``False`` otherwise.
     """
 
     if n < 3:

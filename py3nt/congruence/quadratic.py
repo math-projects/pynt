@@ -6,31 +6,43 @@ from sympy.ntheory import legendre_symbol as legendre
 
 
 def legendre_symbol(a: int, p: int) -> int:
-    """Calculate Legendre symbol (a/p).
-    p must be a prime.
+    r"""Calculate Legendre symbol.
 
-    :param a: An integer.
-    :type a: ``int``
-    :param p: A prime.
-    :type p: ``int``
-    :return: Legendre symbol (a/n). One of -1, 0 or 1.
-    :rtype: ``int``
+    Parameters
+    ----------
+    a : ``int``
+        An integer.
+    p : ``int``
+        A prime.
+
+    Returns
+    -------
+    ``int``
+        Legendre symbol :math:`(\frac{a}{p})\in\{-1,0,1\}`.
     """
 
     return legendre(a=a, p=p)
 
 
 def jacobi_symbol(a: int, n: int) -> int:
-    """Calculate Jacobi symbol (a/n).
-    n must be a positive odd number.
+    r"""Calculate Jacobi symbol.
 
-    :param a: An integer.
-    :type a: ``int``
-    :param n: A positive odd integer.
-    :type n: ``int``
-    :raises ValueError: If n is not positive or odd.
-    :return: Jacobi symbol (a/n). One of -1, 0 or 1.
-    :rtype: ``int``
+    Parameters
+    ----------
+    a : ``int``
+        An integer.
+    n : ``int``
+        A positive odd integer.
+
+    Returns
+    -------
+    ``int``
+        Jacobi symbol :math:`(\frac{a}{n})\in\{-1,0,1\}`.
+
+    Raises
+    ------
+    ValueError
+        If :math:`n` is not positive or odd.
     """
 
     if n <= 0:
