@@ -1,10 +1,11 @@
 """Quadratic residues and symbols"""
 
 
-from sympy.ntheory import jacobi_symbol, legendre_symbol
+from sympy.ntheory import jacobi_symbol as jacobi
+from sympy.ntheory import legendre_symbol as legendre
 
 
-def legendre(a: int, p: int) -> int:
+def legendre_symbol(a: int, p: int) -> int:
     """Calculate Legendre symbol (a/p).
     p must be a prime.
 
@@ -16,10 +17,10 @@ def legendre(a: int, p: int) -> int:
     :rtype: ``int``
     """
 
-    return legendre_symbol(a=a, p=p)
+    return legendre(a=a, p=p)
 
 
-def jacobi(a: int, n: int) -> int:
+def jacobi_symbol(a: int, n: int) -> int:
     """Calculate Jacobi symbol (a/n).
     n must be a positive odd number.
 
@@ -38,4 +39,4 @@ def jacobi(a: int, n: int) -> int:
     if (n & 1) == 0:
         raise ValueError(f"{n} is not odd.")
 
-    return jacobi_symbol(m=a, n=n)
+    return jacobi(m=a, n=n)
