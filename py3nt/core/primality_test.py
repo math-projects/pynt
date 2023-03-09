@@ -15,7 +15,7 @@ def is_prime_naive(n: int) -> bool:
     :param n: Integer to check.
     :type n: ``int``
     :raises ValueError: If ``n`` is negative.
-    :return: ``True`` if ``n`` is a prime. Otherwise, ``False``.
+    :return: ``True`` if :math:`n` is a prime. Otherwise, ``False``.
     :rtype: ``bool``
     """
 
@@ -46,8 +46,8 @@ def miller_rabin(n: int, n_witnesses: int = 5) -> bool:
     :type n: ``int``
     :param n_witnesses: Number of witnesses for the test, defaults to 5.
     :type n_witnesses: ``int``, optional
-    :return: Whether $n$ is prime or not.
-    :rtype: bool
+    :return: Whether :math:`n` is prime or not.
+    :rtype: ``bool``
     """
 
     if n <= MAX_LOGN_FACTORIZATION_LIMIT:
@@ -55,7 +55,11 @@ def miller_rabin(n: int, n_witnesses: int = 5) -> bool:
 
     logn = int(np.floor(np.log(n * 1.0)))
 
-    bases = np.random.randint(low=2, high=int(2 * logn * logn), size=n_witnesses)
+    bases = np.random.randint(
+        low=2,
+        high=np.minimum(n - 1, 2 * logn * logn),
+        size=n_witnesses,
+    )
 
     return mr(n=n, bases=bases)
 
@@ -65,9 +69,9 @@ def solovay_strassen(n: int, max_iter: int = 10) -> bool:
 
     :param n: An integer.
     :type n: ``int``
-    :param max_iter: Number of retries, defaults to 10
+    :param max_iter: Number of retries, defaults to 10.
     :type max_iter: ``int``, optional
-    :return: Whether $n$ is an integer.
+    :return: Whether :math:`n` is an integer.
     :rtype: ``bool``
     """
 
@@ -77,8 +81,16 @@ def solovay_strassen(n: int, max_iter: int = 10) -> bool:
     if (n & 1) == 0:
         return False
 
+    logn = int(np.floor(np.log(n * 1.0)))
+
     for _ in range(max_iter):
-        a = randint(a=2, b=n - 2)
+        a = randint(
+            a=2,
+            b=np.minimum(
+                n - 2,
+                2 * logn * logn,
+            ),
+        )
         rem = jacobi_symbol(a=a, n=n)
 
         if pow(base=a, exp=(n - 1) >> 1, mod=n) != (rem % n):
