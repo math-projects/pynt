@@ -1,42 +1,55 @@
 """Divisor functions"""
 
+from typing import Optional
+
 import numpy as np
 
 from py3nt.core.factorize import FactorizationFactory
 
 
-def number_of_divisor(n: int, factorizer: FactorizationFactory) -> int:
-    """Calculate the number of divisors.
+def sigma_kth(n: int, k: int, factorizer: Optional[FactorizationFactory]) -> int:
+    r"""Calculate the number of divisors.
 
     Parameters
     ----------
     n : ``int``
         A positive integer.
+    k: ``int``
+        A positive integer.
     factorizer : ``FactorizationFactory``
-        If a factorizer class is provided, then it is used to factorize :math:`n` first.
-        The canonical prime factorization is used to calculate the number of divisors.
-        Otherwise all numbers not exceeding :math:`n` are checked.
+        If a factorizer object is provided, then it is used to factorize :math:`n` first.
+        The prime factorization is used to calculate the divisor sum.
+        Otherwise all positive integers not exceeding :math:`n` are checked.
 
     Returns
     -------
     ``int``
-        Number of divisors of :math:`n`.
+        Divisor sigma function :math:`\sum_{d\mid n}d^{k}`.
     """
 
     if factorizer:
         factorization = factorizer.factorize(n=n)
-        multiplicities = [multiplicity for _, multiplicity in factorization.items()]
 
-        return np.prod(np.array(multiplicities) + 1)
+        if k == 0:
+            return np.prod(a=np.array(list(factorization.values())) + 1)
+
+        divisor_sigma = 1
+        for prime, multiplicity in factorization.items():
+            sum_from_prime = pow(prime, (multiplicity + 1) * k) - 1
+            sum_from_prime = sum_from_prime // (pow(prime, k) - 1)
+
+            divisor_sigma *= sum_from_prime
+
+        return divisor_sigma
 
     root = int(np.floor(np.sqrt(n * 1.0)))
 
-    num_divisors = 0
-    for i in range(1, root):
+    divisor_sigma = 0
+    for i in range(1, root + 1):
         if (n % i) == 0:
-            num_divisors += 2
+            divisor_sigma += pow(i, k)
+            j = n // i
+            if i != j:
+                divisor_sigma += pow(j, k)
 
-    if root * root == n:
-        num_divisors += 1
-
-    return num_divisors
+    return divisor_sigma
