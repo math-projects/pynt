@@ -11,6 +11,7 @@ Subpackages
    py3nt.core
    py3nt.functions
    py3nt.numbers
+   py3nt.polynomial
 
 Submodules
 ----------
