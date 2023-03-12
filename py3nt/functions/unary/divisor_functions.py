@@ -5,6 +5,7 @@ from typing import Optional
 import numpy as np
 
 from py3nt.core.factorize import FactorizationFactory
+from py3nt.polynomial.binomial import homogeneous_binomial
 
 
 def sigma_kth(n: int, k: int, factorizer: Optional[FactorizationFactory]) -> int:
@@ -29,16 +30,14 @@ def sigma_kth(n: int, k: int, factorizer: Optional[FactorizationFactory]) -> int
 
     if factorizer:
         factorization = factorizer.factorize(n=n)
+        print(n, k, factorization)
 
         if k == 0:
             return np.prod(a=np.array(list(factorization.values())) + 1)
 
         divisor_sigma = 1
         for prime, multiplicity in factorization.items():
-            sum_from_prime = pow(prime, (multiplicity + 1) * k) - 1
-            sum_from_prime = sum_from_prime // (pow(prime, k) - 1)
-
-            divisor_sigma *= sum_from_prime
+            divisor_sigma *= homogeneous_binomial(a=pow(prime, k), b=1, n=multiplicity + 1)
 
         return divisor_sigma
 
@@ -53,3 +52,45 @@ def sigma_kth(n: int, k: int, factorizer: Optional[FactorizationFactory]) -> int
                 divisor_sigma += pow(j, k)
 
     return divisor_sigma
+
+
+def number_of_divisors(n: int, factorizer: Optional[FactorizationFactory]) -> int:
+    """
+
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer.
+    factorizer : ``FactorizationFactory``
+        If a factorizer object is provided, then it is used to factorize :math:`n` first.
+        The prime factorization is used to calculate the divisor sum.
+        Otherwise all positive integers not exceeding :math:`n` are checked.
+
+    Returns
+    -------
+    ``int``
+        Number of divisors of :math:`n`.
+    """
+
+    return sigma_kth(n=n, k=0, factorizer=factorizer)
+
+
+def sum_of_divisors(n: int, factorizer: Optional[FactorizationFactory]) -> int:
+    """
+
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer.
+    factorizer : ``FactorizationFactory``
+        If a factorizer object is provided, then it is used to factorize :math:`n` first.
+        The prime factorization is used to calculate the divisor sum.
+        Otherwise all positive integers not exceeding :math:`n` are checked.
+
+    Returns
+    -------
+    ``int``
+        Sum of divisors of :math:`n`.
+    """
+
+    return sigma_kth(n=n, k=1, factorizer=factorizer)
