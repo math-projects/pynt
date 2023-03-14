@@ -6,6 +6,38 @@ from py3nt.core.factorize import FactorizationFactory
 
 
 def jordan(n: int, k: int, factorizer: Optional[FactorizationFactory]) -> int:
+    r"""Calculate Jordan's Totient function of :math:`n`:
+    The number of positive integer tuples :math:`(a_{1},\ldots,a_{k})` not exceeding :math:`n`.
+    A generation of Euler's Totient function.
+
+    .. math::
+        J_{k}(n) = n^{k}\prod_{p\mid n}\left(1-\dfrac{1}{p^{k}}\right)\\
+        \varphi(n) = J_{1}(n)
+
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer.
+    k : ``int``
+        A positive integer.
+    factorizer : Optional[FactorizationFactory]
+        If a factorizer object is provided, then it is used to factorize :math:`n` first.
+        The prime factorization is used to calculate the value.
+
+    Returns
+    -------
+    ``int``
+        :math:`J_{k}(n)`.
+
+    Raises
+    ------
+    ValueError
+        If factorizer is none.
+    """
+
+    if n < 1 or k < 1:
+        raise ValueError("`n` or `k` must be a positive integer.")
+
     if not factorizer:
         raise ValueError("`factorizer` cannot be None")
 
@@ -22,6 +54,38 @@ def jordan(n: int, k: int, factorizer: Optional[FactorizationFactory]) -> int:
 
 
 def carmichael(n: int, factorizer: Optional[FactorizationFactory]) -> int:
+    r"""Carmichael function :math:`\lambda(n)`.
+    Also known as the universal exponent :math:`\pmod{n}`.
+    Calculated using the prime factorization of :math:`n=p_{1}^{e_{1}}\cdots p_{k}^{e_{k}}`.
+
+    .. math::
+        \lambda(2^{k+2}) = 2^{k}\\
+        \lambda(p^{k}) = p^{k-1}(p-1)
+
+    if :math:`p` is an odd prime. Use this on the prime factorization.
+
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer.
+    factorizer : Optional[FactorizationFactory]
+        If a factorizer object is provided, then it is used to factorize :math:`n` first.
+        The prime factorization is used to calculate the value.
+
+    Returns
+    -------
+    ``int``
+        :math:`\lambda(n)`.
+
+    Raises
+    ------
+    ValueError
+        If :math:`n` is not positive or `factorizer` is `None`.
+    """
+
+    if n < 1:
+        raise ValueError("`n` must be a positive integer.")
+
     if not factorizer:
         raise ValueError("`factorizer` cannot be None")
 
