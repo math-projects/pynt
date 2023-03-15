@@ -2,6 +2,8 @@
 
 from typing import Optional
 
+import numpy as np
+
 from py3nt.core.factorize import FactorizationFactory
 
 
@@ -60,9 +62,10 @@ def carmichael(n: int, factorizer: Optional[FactorizationFactory]) -> int:
 
     .. math::
         \lambda(2^{k+2}) = 2^{k}\\
-        \lambda(p^{k}) = p^{k-1}(p-1)
+        \lambda(p^{k}) = p^{k-1}(p-1)\\
+        \lambda(ab) = \mbox{lcm}(\lambda(a), \lambda(b))
 
-    if :math:`p` is an odd prime. Use this on the prime factorization.
+    if :math:`p` is an odd prime and :math:`\gcd(a,b)=1`. Use this on the prime factorization.
 
     Parameters
     ----------
@@ -106,8 +109,7 @@ def carmichael(n: int, factorizer: Optional[FactorizationFactory]) -> int:
     factorization = factorizer.factorize(n=n)
 
     for prime, multiplicity in factorization.items():
-        universal_exponent *= pow(prime, multiplicity - 1)
-        universal_exponent *= prime - 1
-        print(universal_exponent, prime, multiplicity)
+        universal_exponent = np.lcm(universal_exponent, pow(prime, multiplicity - 1))
+        universal_exponent = np.lcm(universal_exponent, prime - 1)
 
     return universal_exponent
