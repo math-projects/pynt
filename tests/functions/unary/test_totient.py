@@ -19,6 +19,9 @@ def test_totient() -> None:
     with pytest.raises(ValueError):
         jordan(n=6, k=1, factorizer=None)
 
+    with pytest.raises(ValueError):
+        jordan(n=0, k=0, factorizer=None)
+
 
 def test_carmichael() -> None:
     """Test Carmichael's function"""
@@ -29,6 +32,10 @@ def test_carmichael() -> None:
     assert carmichael(n=21, factorizer=factorizer) == 6
     assert carmichael(n=35, factorizer=factorizer) == 12
     assert carmichael(n=36, factorizer=factorizer) == 6
+    assert carmichael(n=36, factorization={3: 2, 2: 2}) == 6
 
     with pytest.raises(ValueError):
-        assert carmichael(n=10, factorizer=None)
+        carmichael(n=10, factorizer=None)
+
+    with pytest.raises(ValueError):
+        carmichael(n=0, factorizer=None)
