@@ -1,6 +1,9 @@
 """Integers"""
 
 
+import random
+
+import numpy as np
 from sympy.ntheory import pollard_rho
 
 from py3nt.defaults import BIGGEST_NUMBER, LARGEST_SMALL_NUMBER
@@ -66,7 +69,7 @@ class Integer(int):
     def pollard_rho_factor(self, a: int, c: int, max_iter: int = 5) -> int:
         """
         Find a factor of ``n`` greater than 1 using Pollard's rho factorization.
-        Use f(x) = x^2+c
+        Use :math:`f(x) = x^2+c`
 
         Parameters
         ----------
@@ -98,3 +101,44 @@ class Integer(int):
             )
 
         return pollard_rho(n=self, s=a, a=c, retries=max_iter)
+
+    def brent_pollard_rho_factor(self) -> int:
+        """Brent's optimization of Pollard's rho algorithm.
+
+        Returns
+        -------
+        ``int``
+            A non-trivial factor of :math:`n` when :math:`n` is not a prime.
+        """
+
+        if (self & 1) == 0:
+            return 2
+
+        y = random.randint(1, self - 1)
+        c = random.randint(1, self - 1)
+        m = random.randint(1, self - 1)
+        divisor, r, q = 1, 1, 1
+
+        while divisor == 1:
+            x = y
+            for _ in range(r):
+                y = (Integer(y).multiply_modular(other=y, modulus=self) + c) % self
+
+            k = 0
+            while k < r and divisor == 1:
+                ys = y
+                for _ in range(min(m, r - k)):
+                    y = ((y * y) % self + c) % self
+                    q = q * (abs(x - y)) % self
+                divisor = np.gcd(q, self)
+                k = k + m
+            r <<= 1
+
+        if divisor == self:
+            while True:
+                ys = ((ys * ys) % self + c) % self
+                divisor = np.gcd(abs(x - ys), self)
+                if divisor > 1:
+                    break
+
+        return divisor

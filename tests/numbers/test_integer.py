@@ -47,3 +47,17 @@ class TestInteger:
         n = (1 << 64) + 1
         factor = Integer(n).pollard_rho_factor(a=2, c=1, max_iter=5)
         assert factor > 1
+
+    def test_brent_pollard_rho_factor(self) -> None:
+        """Test Brent-Pollard's rho factorization"""
+
+        assert Integer(100).brent_pollard_rho_factor() == 2
+
+        n = (1 << 50) + 1
+        factor = Integer(n).brent_pollard_rho_factor()
+        assert factor > 1
+        assert (n % factor) == 0
+
+        n = (1 << 64) + 1
+        factor = Integer(n).brent_pollard_rho_factor()
+        assert factor > 1

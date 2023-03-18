@@ -68,8 +68,6 @@ def homogeneous_binomial(a: int, b: int, n: int) -> int:
     if n == 2:
         return a + b
 
-    print(a, b, n)
-
     companion = np.array([[a + b, -a * b], [1, 0]])
     f_n = np.linalg.matrix_power(a=companion, n=n - 2)
 
