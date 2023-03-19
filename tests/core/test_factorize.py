@@ -96,6 +96,8 @@ class TestFactorizer:
         factorization = factorizer.factorize(n=357479581)
         assert 61 in factorization
 
+        assert factorizer.factorize(n=12) == {2: 2, 3: 1}
+
         factorizer = FactorizationFactory(N=int(1e70))
         with pytest.raises(ValueError):
             factorization = factorizer.factorize(n=int(1e80))
