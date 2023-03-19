@@ -1,11 +1,13 @@
 """Factorize integers"""
 
 
+from collections import deque
 from dataclasses import dataclass, field
 
 import numpy as np
 
 from py3nt.core.base import BaseFactorization, BaseSieveFactorization
+from py3nt.core.primality_test import solovay_strassen
 from py3nt.core.sieve import SieveOfEratosthenes, SieveOfEratosthenesOptimized
 from py3nt.defaults import (
     BIGGEST_NUMBER,
@@ -13,6 +15,7 @@ from py3nt.defaults import (
     LOGN_PRIME_FACTOR_FIELD,
     MAX_LOGN_FACTORIZATION_LIMIT,
 )
+from py3nt.numbers.integer import Integer
 
 
 @dataclass
@@ -127,7 +130,23 @@ class BigIntFactorization(BaseFactorization):
                 f"{n} is greater than the current default biggest number: {BIGGEST_NUMBER}"
             )
 
-        return {}
+        queue = deque([n])
+        factorization: dict = {}
+
+        while queue:
+            cur = queue.popleft()
+
+            if solovay_strassen(n=cur, max_iter=10):
+                if cur in factorization:
+                    factorization[cur] += 1
+                else:
+                    factorization[cur] = 1
+            else:
+                factor = Integer(cur).brent_pollard_rho_factor()
+                queue.append(factor)
+                queue.append(cur // factor)
+
+        return factorization
 
 
 @dataclass

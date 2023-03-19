@@ -113,7 +113,7 @@ def solovay_strassen(n: int, max_iter: int = 10) -> bool:
         )
         rem = jacobi_symbol(a=a, n=n)
 
-        if pow(base=a, exp=(n - 1) >> 1, mod=n) != (rem % n):
+        if pow(base=int(a), exp=int((n - 1) >> 1), mod=int(n)) != (rem % n):
             return False
 
     return True

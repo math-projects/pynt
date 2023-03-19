@@ -83,8 +83,18 @@ class TestFactorizer:
         """Test factorization of large numbers"""
 
         factorizer = FactorizationFactory(N=int(1e50))
-        factorization = factorizer.factorize(n=int(1e15))
+        factorization = factorizer.factorize(n=int(1e15) + 1)
         assert isinstance(factorization, dict)
+        assert 7 in factorization
+        assert 13 in factorization
+        assert 11 in factorization
+
+        factorization = factorizer.factorize(n=(1 << 64) + 1)
+        for prime in factorization:
+            assert prime > 1
+
+        factorization = factorizer.factorize(n=357479581)
+        assert 61 in factorization
 
         factorizer = FactorizationFactory(N=int(1e70))
         with pytest.raises(ValueError):
