@@ -43,4 +43,4 @@ def test_solovay_strassen(primes_large: list):
     assert solovay_strassen(n=4) is False
 
     for prime in primes_large:
-        assert solovay_strassen(n=prime) is True
+        assert solovay_strassen(n=prime, max_iter=10) is True

@@ -1,8 +1,6 @@
 """Integers"""
 
 
-import random
-
 import numpy as np
 from sympy.ntheory import pollard_rho
 
@@ -114,9 +112,9 @@ class Integer(int):
         if (self & 1) == 0:
             return 2
 
-        y = random.randint(1, self - 1)
-        c = random.randint(1, self - 1)
-        m = random.randint(1, self - 1)
+        y = np.random.randint(low=2, high=np.minimum(self - 1, (1 << 15)))
+        c = np.random.randint(low=2, high=np.minimum(self - 1, (1 << 15)))
+        m = np.random.randint(low=2, high=np.minimum(self - 1, (1 << 15)))
         divisor, r, q = 1, 1, 1
 
         while divisor == 1:
