@@ -1,8 +1,7 @@
 """Quadratic residues and symbols"""
 
 
-from sympy.ntheory import jacobi_symbol as jacobi
-from sympy.ntheory import legendre_symbol as legendre
+import numpy as np
 
 
 def legendre_symbol(a: int, p: int) -> int:
@@ -21,7 +20,15 @@ def legendre_symbol(a: int, p: int) -> int:
         Legendre symbol :math:`(\frac{a}{p})\in\{-1,0,1\}`.
     """
 
-    return legendre(a=a, p=p)
+    a %= p
+
+    if not a:
+        return 0
+
+    if pow(a, (p - 1) >> 1, p) == 1:
+        return 1
+
+    return -1
 
 
 def jacobi_symbol(a: int, n: int) -> int:
@@ -51,4 +58,26 @@ def jacobi_symbol(a: int, n: int) -> int:
     if (n & 1) == 0:
         raise ValueError(f"{n} is not odd.")
 
-    return jacobi(m=a, n=n)
+    if a < 0 or a > n:
+        a %= n
+
+    if not a:
+        return int(n == 1)
+
+    if n == 1 or a == 1:
+        return 1
+
+    if np.gcd(a, n) != 1:
+        return 0
+
+    jacobi = 1
+    while a != 0:
+        while (a & 1) == 0 and a > 0:
+            a >>= 1
+            if n % 8 in [3, 5]:
+                jacobi = -jacobi
+        a, n = n, a
+        if a % 4 == n % 4 == 3:
+            jacobi = -jacobi
+        a %= n
+    return jacobi
