@@ -106,14 +106,40 @@ def solovay_strassen(n: int, max_iter: int = 10) -> bool:
     for _ in range(max_iter):
         a = randint(
             a=2,
-            b=np.minimum(
-                n - 2,
-                2 * logn * logn,
+            b=int(
+                np.minimum(
+                    n - 2,
+                    2 * logn * logn,
+                )
             ),
         )
         rem = jacobi_symbol(a=a, n=n)
 
-        if pow(base=a, exp=(n - 1) >> 1, mod=n) != (rem % n):
+        if pow(base=int(a), exp=int((n - 1) >> 1), mod=int(n)) != (rem % n):
             return False
 
     return True
+
+
+def is_prime(n: int) -> bool:
+    """Check if a positive integer is prime.
+
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer.
+
+    Returns
+    -------
+    ``bool``
+        If True, then :math:`n` is a prime (probable if :math:`n` is large).
+        Otherwise composite.
+    """
+
+    if np.less_equal(n, int(1e4)):
+        return is_prime_naive(n=n)
+
+    if np.less_equal(n, int(1e12)):
+        return miller_rabin(n=n, n_witnesses=10)
+
+    return solovay_strassen(n=n, max_iter=10)
