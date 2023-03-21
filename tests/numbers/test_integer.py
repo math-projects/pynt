@@ -2,7 +2,6 @@
 
 
 import numpy as np
-import pytest
 
 from py3nt.numbers.integer import Integer
 
@@ -35,9 +34,6 @@ class TestInteger:
         """Test Pollard's rho factorization"""
 
         assert Integer(100).pollard_rho_factor(a=2, c=1) == 2
-
-        with pytest.raises(ValueError):
-            Integer((1 << 32) + 1).pollard_rho_factor(a=2, c=1)
 
         n = (1 << 50) + 1
         factor = Integer(n).pollard_rho_factor(a=2, c=1, max_iter=5)

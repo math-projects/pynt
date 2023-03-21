@@ -4,7 +4,7 @@
 import numpy as np
 from sympy.ntheory import pollard_rho
 
-from py3nt.defaults import BIGGEST_NUMBER, LARGEST_SMALL_NUMBER
+from py3nt.defaults import MAX_LOGN_FACTORIZATION_LIMIT
 
 
 class Integer(int):
@@ -93,11 +93,6 @@ class Integer(int):
         if (self % 2) == 0:
             return 2
 
-        if self <= LARGEST_SMALL_NUMBER or self > BIGGEST_NUMBER:
-            raise ValueError(
-                f"{self} is smaller than: {LARGEST_SMALL_NUMBER}. Use normal sieve."
-            )
-
         return pollard_rho(n=self, s=a, a=c, retries=max_iter)
 
     def brent_pollard_rho_factor(self) -> int:
@@ -112,9 +107,12 @@ class Integer(int):
         if (self & 1) == 0:
             return 2
 
-        y = np.random.randint(low=2, high=np.minimum(self - 1, (1 << 15)))
-        c = np.random.randint(low=2, high=np.minimum(self - 1, (1 << 15)))
-        m = np.random.randint(low=2, high=np.minimum(self - 1, (1 << 15)))
+        if self < MAX_LOGN_FACTORIZATION_LIMIT:
+            return self.pollard_rho_factor(a=2, c=1, max_iter=10)
+
+        y = np.random.randint(low=2, high=int(np.minimum(self - 1, (1 << 30))))
+        c = np.random.randint(low=2, high=int(np.minimum(self - 1, (1 << 30))))
+        m = np.random.randint(low=2, high=int(np.minimum(self - 1, (1 << 30))))
         divisor, r, q = 1, 1, 1
 
         while divisor == 1:
