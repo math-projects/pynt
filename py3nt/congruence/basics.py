@@ -4,7 +4,7 @@
 def extended_euclidean(a: int, b: int) -> tuple[int, int, int]:
     r"""Given :math:`a,b`.
     Find :math:`x,y` such that :math:`ax+by=\gcd(a,b)`.
-    Such :math:`x,y` exists by :math:`\mbox{B}\'{e}\mbox{zout's}` identity.
+    Such :math:`x,y` exists by Bézout's identity.
     Use Extended Euclidean algorithm.
 
     Parameters
