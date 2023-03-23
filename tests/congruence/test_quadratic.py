@@ -17,6 +17,10 @@ def test_legendre() -> None:
 def test_jacobi() -> None:
     """Test Jacobi symbol"""
 
+    assert jacobi_symbol(a=10, n=5) == 0
+    assert jacobi_symbol(a=10, n=1) == 1
+    assert jacobi_symbol(a=1, n=1) == 1
+
     assert jacobi_symbol(a=-1, n=5) == 1
     assert jacobi_symbol(a=-1, n=3) == -1
     assert jacobi_symbol(a=12, n=15) == 0
