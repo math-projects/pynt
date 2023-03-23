@@ -4,6 +4,14 @@ py3nt.congruence package
 Submodules
 ----------
 
+py3nt.congruence.basics module
+------------------------------
+
+.. automodule:: py3nt.congruence.basics
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 py3nt.congruence.quadratic module
 ---------------------------------
 
