@@ -49,6 +49,8 @@ class TestInteger:
 
         assert Integer(100).brent_pollard_rho_factor() == 2
 
+        assert Integer(1001).brent_pollard_rho_factor() > 1
+
         n = (1 << 50) + 1
         factor = Integer(n).brent_pollard_rho_factor()
         assert factor > 1
