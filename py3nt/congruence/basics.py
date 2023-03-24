@@ -51,7 +51,7 @@ def inverse(a: int, n: int, is_prime: bool = False) -> int:
         Whether :math:`n` is prime or not, by default False.
         If prime, then Fermat's little theorem is used to calculate inverse.
 
-    .. math::
+         .. math::
             a^{p-2} \equiv a^{-1}\pmod{p}
 
     Returns
@@ -62,7 +62,7 @@ def inverse(a: int, n: int, is_prime: bool = False) -> int:
     Raises
     ------
     ``ValueError``
-        If :math:`\gcd(a,n) > 1` or :math:.`n<2`.
+        If :math:`\gcd(a,n) > 1` or :math:`n<2`.
     """
 
     if n <= 1:

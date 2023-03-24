@@ -8,8 +8,13 @@ from py3nt.core.factorize import FactorizationFactory
 from py3nt.polynomial.binomial import homogeneous_binomial
 
 
-def sigma_kth(n: int, k: int, factorizer: Optional[FactorizationFactory]) -> int:
-    r"""Calculate the number of divisors.
+def sigma_kth(
+    n: int,
+    k: int,
+    factorizer: Optional[FactorizationFactory],
+    factorization: Optional[dict[int, int]] = None,
+) -> int:
+    r"""Calculate the divisor sum function :math:`\sigma_{k}(n)=\sum_{d\mid n}d^{k}`.
 
     Parameters
     ----------
@@ -28,10 +33,11 @@ def sigma_kth(n: int, k: int, factorizer: Optional[FactorizationFactory]) -> int
         Divisor sigma function :math:`\sum_{d\mid n}d^{k}`.
     """
 
-    if factorizer:
-        factorization = factorizer.factorize(n=n)
-        print(n, k, factorization)
+    if not factorization:
+        if factorizer:
+            factorization = factorizer.factorize(n=n)
 
+    if factorization:
         if k == 0:
             return np.prod(a=np.array(list(factorization.values())) + 1)
 
@@ -54,7 +60,11 @@ def sigma_kth(n: int, k: int, factorizer: Optional[FactorizationFactory]) -> int
     return divisor_sigma
 
 
-def number_of_divisors(n: int, factorizer: Optional[FactorizationFactory]) -> int:
+def number_of_divisors(
+    n: int,
+    factorizer: Optional[FactorizationFactory],
+    factorization: Optional[dict[int, int]] = None,
+) -> int:
     """
 
     Parameters
@@ -72,10 +82,14 @@ def number_of_divisors(n: int, factorizer: Optional[FactorizationFactory]) -> in
         Number of divisors of :math:`n`.
     """
 
-    return sigma_kth(n=n, k=0, factorizer=factorizer)
+    return sigma_kth(n=n, k=0, factorizer=factorizer, factorization=factorization)
 
 
-def sum_of_divisors(n: int, factorizer: Optional[FactorizationFactory]) -> int:
+def sum_of_divisors(
+    n: int,
+    factorizer: Optional[FactorizationFactory],
+    factorization: Optional[dict[int, int]] = None,
+) -> int:
     """
 
     Parameters
@@ -93,4 +107,4 @@ def sum_of_divisors(n: int, factorizer: Optional[FactorizationFactory]) -> int:
         Sum of divisors of :math:`n`.
     """
 
-    return sigma_kth(n=n, k=1, factorizer=factorizer)
+    return sigma_kth(n=n, k=1, factorizer=factorizer, factorization=factorization)
