@@ -13,7 +13,7 @@ def order_modulo_prime_power(
     r"""Caculate :math:`\mbox{ord}_{p}(a)`.
     The smallest positive integer such that
 
-    .. math:: a^{\mbox{ord}_{p}(a)} & \equiv1\pmod{p^{e}}
+    .. math:: a^{\mbox{ord}_{p}(a)} \equiv1\pmod{p^{e}}
 
     Parameters
     ----------
