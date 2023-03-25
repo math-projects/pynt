@@ -12,10 +12,10 @@ py3nt.congruence.basics module
    :undoc-members:
    :show-inheritance:
 
-py3nt.congruence.order module
------------------------------
+py3nt.congruence.primitives module
+----------------------------------
 
-.. automodule:: py3nt.congruence.order
+.. automodule:: py3nt.congruence.primitives
    :members:
    :undoc-members:
    :show-inheritance:
