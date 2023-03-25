@@ -1,5 +1,11 @@
 """some basic functions in modular arithmetic"""
 
+from typing import Sequence
+
+import numpy as np
+
+from py3nt.numbers.integer import Integer
+
 
 def extended_euclidean(a: int, b: int) -> tuple[int, int, int]:
     r"""Given :math:`a,b`.
@@ -80,5 +86,58 @@ def inverse(a: int, n: int, is_prime: bool = False) -> int:
 
     if g > 1:
         raise ValueError(f"gcd({a}, {n})={g} which is greater than 1.")
+
+    return x
+
+
+def chinese_remainder_theorem(r: Sequence[int], m: Sequence[int]) -> int:
+    r"""Chinese Remainder Theorem.
+    Given :math:`x\equiv r_{i}\pmod{m_{i}}` where :math:`\gcd(m_{i},m_{j})=1` for :math:`i\neq j`.
+
+    Parameters
+    ----------
+    r : ``Sequence[int]``
+        Remainders.
+    m : ``Sequence[int]``
+        Modulis.
+
+    Returns
+    -------
+    ``int``
+        Minimum :math:`x` that satisfies the congruences.
+
+    Raises
+    ------
+    ``ValueError``
+        If :math:`\gcd(m_{i},m_{j})\neq1` for some :math:`i\neq j`.
+        Or if the remainders and modulis have different length.
+    """
+    for i, _ in enumerate(m):
+        for _m in m[i + 1 :]:
+            g = np.gcd(m[i], _m)
+            if g > 1:
+                raise ValueError(f"{m[i]}, {_m}, gcd: {g}")
+
+    if len(r) != len(m):
+        raise ValueError(f"`r` has {len(r)} elements, `m` has {len(m)} elements.")
+
+    if len(r) < 2:
+        raise ValueError("`r` must have at least 2 element.")
+
+    M = np.prod(m)
+
+    n = [M // _m for _m in m]
+    inverses = [inverse(a=int(_n), n=_m) for (_n, _m) in zip(n, m)]
+    inverses = [
+        Integer(_i).multiply_modular(other=_r, modulus=int(M))
+        for (_i, _r) in zip(inverses, r)
+    ]
+    inverses = [
+        Integer(_i).multiply_modular(other=int(_n), modulus=int(M))
+        for (_i, _n) in zip(inverses, n)
+    ]
+    x = 0
+    for _i in inverses:
+        x = (x + int(_i)) % int(M)
 
     return x

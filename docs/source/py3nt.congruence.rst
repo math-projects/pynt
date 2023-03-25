@@ -12,6 +12,14 @@ py3nt.congruence.basics module
    :undoc-members:
    :show-inheritance:
 
+py3nt.congruence.order module
+-----------------------------
+
+.. automodule:: py3nt.congruence.order
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 py3nt.congruence.quadratic module
 ---------------------------------
 

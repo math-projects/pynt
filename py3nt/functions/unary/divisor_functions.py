@@ -108,3 +108,59 @@ def sum_of_divisors(
     """
 
     return sigma_kth(n=n, k=1, factorizer=factorizer, factorization=factorization)
+
+
+def generate_divisors(
+    n: int,
+    factorizer: Optional[FactorizationFactory] = None,
+    factorization: Optional[dict[int, int]] = None,
+) -> np.ndarray:
+    r"""Generate all positive divisors of a positive integer.
+
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer.
+    factorizer : ``Optional[FactorizationFactory], optional``
+        If specified, ``factorizer`` is used to factorize :math:`n`, by default ``None``.
+    factorization : ``Optional[dict[int, int]]``, optional
+        If specified, used as prime factorization of :math:`n`, by default ``None``.
+        Cannot be ``None`` if ``factorizer`` is also ``None``.
+
+    Returns
+    -------
+    ``np.ndarray``
+        An unsorted numpy array of divisors: :math:`{d\in\mathbb{N}:d\mid n}`.
+
+    Raises
+    ------
+    ``ValueError``
+        If both ``factorizer`` and ``factorizer`` are ``None``.
+    """
+
+    if not factorization:
+        if not factorizer:
+            raise ValueError("`factorizer` cannot be None")
+
+        factorization = factorizer.factorize(n=n)
+
+    divisors = np.empty(
+        shape=(number_of_divisors(n=n, factorization=factorization, factorizer=None)),
+        dtype=int,
+    )
+
+    tau = 1
+    divisors[0] = 1
+
+    for prime, multiplicity in factorization.items():
+        cur = 1
+        tau_tmp = tau
+
+        for _ in range(multiplicity):
+            cur *= prime
+
+            for i in range(tau_tmp):
+                divisors[tau] = divisors[i] * cur
+                tau += 1
+
+    return divisors
