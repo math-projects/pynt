@@ -59,7 +59,7 @@ def order_modulo_n(
     r"""Caculate :math:`\mbox{ord}_{n}(a)`.
     The smallest positive integer such that
 
-    .. math:: a^{\mbox{ord}_{n}(a)} & \equiv1\pmod{n}
+    .. math:: a^{\mbox{ord}_{n}(a)} \equiv1\pmod{n}
 
     Parameters
     ----------
