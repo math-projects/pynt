@@ -58,6 +58,38 @@ class Integer(int):
 
         return remainder
 
+    def kthroot(self, k: int) -> int:
+        r"""
+
+        Parameters
+        ----------
+        k : ``int``
+            A positive integer.
+
+        Returns
+        -------
+        ``int``
+            A positive integer :math:`r` such that :math:`r^{k}\leq n<r^{k+1}`.
+        """
+
+        high = 1
+        while pow(high, k) < self:
+            high <<= 1
+        low = high >> 1
+        while high - low > 1:
+            mid = (low + high) >> 1
+            cur = pow(mid, k)
+            if cur < self:
+                low = mid
+            elif self < cur:
+                high = mid
+            else:
+                return mid
+        if pow(high, k) == self:
+            return high
+        else:
+            return low
+
     def __pow__(self, exponent: int, modulus=None):
         if not modulus:
             return pow(int(self), int(exponent))

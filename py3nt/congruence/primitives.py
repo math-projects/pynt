@@ -5,6 +5,7 @@ import numpy as np
 
 from py3nt.core.factorize import FactorizationFactory, is_prime
 from py3nt.functions.unary.divisor_functions import generate_divisors
+from py3nt.numbers.integer import Integer
 
 
 def order_modulo_prime_power(
@@ -182,8 +183,8 @@ def is_prime_power(n: int) -> tuple[int, int]:
     lim: int = int(np.log2(n))
 
     for i in range(1, lim + 1):
-        root = int(pow(n, 1.0 / i))
-        if pow(root, i) == n:
+        root = Integer(n).kthroot(k=i)
+        if root**i == n:
             if is_prime(root):
                 return (root, i)
 
@@ -223,6 +224,7 @@ def primitive_root_modulo_n(n: int, factorizer: FactorizationFactory) -> int:
         n >>= 1
 
     p, e = is_prime_power(n=n)
+    print(m, n, p, e)
 
     if not p:
         raise ValueError(f"n: {n} is not one of 2, 4, p^k, 2p^k")
