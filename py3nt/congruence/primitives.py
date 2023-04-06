@@ -3,7 +3,7 @@
 
 import numpy as np
 
-from py3nt.core.factorize import FactorizationFactory
+from py3nt.core.factorize import FactorizationFactory, is_prime
 from py3nt.functions.unary.divisor_functions import generate_divisors
 
 
@@ -94,3 +94,145 @@ def order_modulo_n(
         )
 
     return order
+
+
+def least_primitive_root_modulo_prime(p: int, factorizer: FactorizationFactory) -> int:
+    r"""Find the least primitive root :math:`\pmod{p}`.
+
+    Parameters
+    ----------
+    p : ``int``
+        A prime.
+    factorizer : ``FactorizationFactory``
+        Used to calculate order :math:`\pmod{p}`.
+
+    Returns
+    -------
+    ``int``
+        Least primitive root.
+
+    Raises
+    ------
+    ``ValueError``
+        If :math:`p` is not a prime.
+    """
+
+    if p < 2:
+        raise ValueError(f"p:{p} < 2.")
+
+    if not is_prime(p):
+        raise ValueError(f"p: {p} is not a probable prime.")
+
+    limit = int(np.floor(pow(p, 0.68)))
+
+    g = 1
+    for a in range(2, limit + 1):
+        if order_modulo_prime_power(a=a, p=p, e=1, factorizer=factorizer) == p - 1:
+            g = a
+            break
+
+    return g
+
+
+def primitive_root_modulo_prime_power(
+    p: int, e: int, factorizer: FactorizationFactory
+) -> int:
+    r"""Find the least primitive root :math:`\pmod{p^{e}}`.
+
+    Parameters
+    ----------
+    p : ``int``
+        A prime.
+    e: ``int``
+        A positive integer.
+    factorizer : ``FactorizationFactory``
+        Used to calculate order :math:`\pmod{p^{e}}`.
+
+    Returns
+    -------
+    ``int``
+        Least primitive root.
+    """
+    g = least_primitive_root_modulo_prime(p=p, factorizer=factorizer)
+    order = order_modulo_prime_power(a=p, p=p, e=e, factorizer=factorizer)
+
+    if order != pow(p, e - 1) * (p - 1):
+        return g + p
+
+    return g
+
+
+def is_prime_power(n: int) -> tuple[int, int]:
+    """Check if :math:`n` is a prime power or not.
+
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer.
+
+    Returns
+    -------
+    tuple[int, int]
+        :math:`(p, e)` where :math:`n=p^{e}`.
+    """
+
+    if n < 2:
+        return (0, 0)
+
+    lim: int = int(np.log2(n))
+
+    for i in range(1, lim + 1):
+        root = int(pow(n, 1.0 / i))
+        if pow(root, i) == n:
+            if is_prime(root):
+                return (root, i)
+
+    return (0, lim)
+
+
+def primitive_root_modulo_n(n: int, factorizer: FactorizationFactory) -> int:
+    r"""Primitive root :math:`n` if it exists.
+
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer.
+    factorizer : ``FactorizationFactory``
+        Used to calculate primitive root :math:`\pmod{p}`.
+
+    Returns
+    -------
+    ``int``
+        A primitive root.
+
+    Raises
+    ------
+    ValueError
+        If :math:`n<3` or :math:`n` does not have a primitive root.
+    """
+
+    if n < 3:
+        raise ValueError(f"n: {n} must be at least 3.")
+
+    if not n & 3:
+        raise ValueError(f"n: {n} is divisible by 4, does not have a primitive root.")
+
+    m = None
+    if not n & 1:
+        m = n
+        n >>= 1
+
+    p, e = is_prime_power(n=n)
+
+    if not p:
+        raise ValueError(f"n: {n} is not one of 2, 4, p^k, 2p^k")
+
+    g = primitive_root_modulo_prime_power(p=p, e=e, factorizer=factorizer)
+
+    if m:
+        if not g & 1:
+            g += pow(p, e)
+            if g > m:
+                g %= m
+
+    return g
