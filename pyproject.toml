@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py3nt"
-version = "2.1.17"
+version = "2.1.18"
 description = "A Number Theory Library for Python 3"
 authors = ["Masum Billal <billalmasum93@gmail.com>"]
 
