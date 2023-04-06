@@ -3,6 +3,7 @@
 import pytest
 
 from py3nt.congruence.primitives import (
+    is_prime_power,
     least_primitive_root_modulo_prime,
     order_modulo_n,
     primitive_root_modulo_n,
@@ -29,10 +30,24 @@ def test_primitive_root_modulo_prime() -> None:
     """Test primitive root modulo prime"""
 
     factorizer = FactorizationFactory(N=1000)
+
+    with pytest.raises(ValueError):
+        least_primitive_root_modulo_prime(p=1, factorizer=factorizer)
+    with pytest.raises(ValueError):
+        least_primitive_root_modulo_prime(p=10, factorizer=factorizer)
+
     assert least_primitive_root_modulo_prime(p=5, factorizer=factorizer) == 2
     assert least_primitive_root_modulo_prime(p=11, factorizer=factorizer) == 2
     assert least_primitive_root_modulo_prime(p=23, factorizer=factorizer) == 5
     assert least_primitive_root_modulo_prime(p=31, factorizer=factorizer) == 3
+
+
+def test_is_prime_power() -> None:
+    """Test if a positive integer is a prime power"""
+
+    assert is_prime_power(n=125) == (5, 3)
+    assert is_prime_power(n=256) == (2, 8)
+    assert is_prime_power(n=1) == (0, 0)
 
 
 def test_primitive_root_modulo_n() -> None:
@@ -56,3 +71,10 @@ def test_primitive_root_modulo_n() -> None:
     ]
     assert primitive_root_modulo_n(n=26, factorizer=factorizer) in [7, 11, 15, 19]
     assert primitive_root_modulo_n(n=27, factorizer=factorizer) in [2, 5, 11, 14, 20, 23]
+
+    with pytest.raises(ValueError):
+        primitive_root_modulo_n(n=1, factorizer=factorizer)
+    with pytest.raises(ValueError):
+        primitive_root_modulo_n(n=100, factorizer=factorizer)
+    with pytest.raises(ValueError):
+        primitive_root_modulo_n(n=15, factorizer=factorizer)
