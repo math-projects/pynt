@@ -3,9 +3,8 @@
 
 import numpy as np
 
-from py3nt.core.factorize import FactorizationFactory, is_prime
+from py3nt.core.factorize import FactorizationFactory, is_prime, is_prime_power
 from py3nt.functions.unary.divisor_functions import generate_divisors
-from py3nt.numbers.integer import Integer
 
 
 def highest_power_of_2(a: int) -> int:
@@ -227,34 +226,6 @@ def primitive_root_modulo_prime_power(
     return g
 
 
-def is_prime_power(n: int) -> tuple[int, int]:
-    """Check if :math:`n` is a prime power or not.
-
-    Parameters
-    ----------
-    n : ``int``
-        A positive integer.
-
-    Returns
-    -------
-    tuple[int, int]
-        :math:`(p, e)` where :math:`n=p^{e}`.
-    """
-
-    if n < 2:
-        return (0, 0)
-
-    lim: int = int(np.log2(n))
-
-    for i in range(1, lim + 1):
-        root = Integer(n).kthroot(k=i)
-        if root**i == n:
-            if is_prime(root):
-                return (root, i)
-
-    return (0, lim)
-
-
 def primitive_root_modulo_n(n: int, factorizer: FactorizationFactory) -> int:
     r"""Primitive root :math:`n` if it exists.
 
@@ -298,6 +269,7 @@ def primitive_root_modulo_n(n: int, factorizer: FactorizationFactory) -> int:
     if m:
         if not g & 1:
             g += pow(p, e)
+
             if g > m:
                 g %= m
 

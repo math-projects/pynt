@@ -3,8 +3,16 @@
 
 import pytest
 
-from py3nt.core.factorize import FactorizationFactory
+from py3nt.core.factorize import FactorizationFactory, is_prime_power
 from py3nt.core.sieve import SieveOfEratosthenesOptimized
+
+
+def test_is_prime_power() -> None:
+    """Test if a positive integer is a prime power"""
+
+    assert is_prime_power(n=125) == (5, 3)
+    assert is_prime_power(n=256) == (2, 8)
+    assert is_prime_power(n=1) == (0, 0)
 
 
 class TestFactorizer:
