@@ -8,13 +8,74 @@ from py3nt.functions.unary.divisor_functions import generate_divisors
 from py3nt.numbers.integer import Integer
 
 
+def highest_power_of_2(a: int) -> int:
+    r"""Calculate :math:`\nu_{2}(a)`.
+
+    Parameters
+    ----------
+    a : ``int``
+        An integer.
+
+    Returns
+    -------
+    ``int``
+        Highest power of 2 that divides :math:`a`.
+    """
+
+    exp = 0
+
+    while not a & 1:
+        a >>= 1
+        exp += 1
+
+    return exp
+
+
+def order_modulo_power_of_2(a: int, k: int) -> int:
+    r"""Calculate :math:`\mbox{ord}_{2^{k}}(a)`.
+    The smallest positive integer such that
+
+    .. math:: a^{\mbox{ord}_{2^{k}}(a)} \equiv1\pmod{2^{k}}
+
+
+    Parameters
+    ----------
+    a : int
+        _description_
+    k : int
+        _description_
+
+    Returns
+    -------
+    int
+        _description_
+
+    Raises
+    ------
+    ValueError
+        _description_
+    """
+
+    if not a & 1:
+        raise ValueError(f"a: {a} is divisible by 2.")
+
+    alpha = highest_power_of_2(a=a - 1)
+
+    if alpha >= k:
+        return 1
+
+    beta = highest_power_of_2(a=a + 1)
+
+    return 1 << (k - alpha - beta + 1)
+
+
 def order_modulo_prime_power(
     a: int, p: int, e: int, factorizer: FactorizationFactory
 ) -> int:
-    r"""Caculate :math:`\mbox{ord}_{p}(a)`.
+    r"""Caculate :math:`\mbox{ord}_{p^{e}}(a)`.
     The smallest positive integer such that
 
-    .. math:: a^{\mbox{ord}_{p}(a)} \equiv1\pmod{p^{e}}
+    .. math:: a^{\mbox{ord}_{p^{e}}(a)} \equiv1\pmod{p^{e}}
 
     Parameters
     ----------
@@ -33,6 +94,9 @@ def order_modulo_prime_power(
     ``int``
         :math:`\mbox{ord}_{p}(a)`.
     """
+
+    if p == 2:
+        return order_modulo_power_of_2(a=a, k=e)
 
     divisors = generate_divisors(n=p - 1, factorizer=factorizer)
     divisors = np.sort(divisors)
