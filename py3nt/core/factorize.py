@@ -18,6 +18,34 @@ from py3nt.defaults import (
 from py3nt.numbers.integer import Integer
 
 
+def is_prime_power(n: int) -> tuple[int, int]:
+    """Check if :math:`n` is a prime power or not.
+
+    Parameters
+    ----------
+    n : ``int``
+        A positive integer.
+
+    Returns
+    -------
+    tuple[int, int]
+        :math:`(p, e)` where :math:`n=p^{e}`.
+    """
+
+    if n < 2:
+        return (0, 0)
+
+    lim: int = int(np.log2(n))
+
+    for i in range(1, lim + 1):
+        root = Integer(n).kthroot(k=i)
+        if root**i == n:
+            if is_prime(root):
+                return (root, i)
+
+    return (0, lim)
+
+
 @dataclass
 class NaiveSqrtFactorization(BaseFactorization):
     """
