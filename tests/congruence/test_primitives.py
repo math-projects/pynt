@@ -6,6 +6,7 @@ from py3nt.congruence.primitives import (
     is_prime_power,
     least_primitive_root_modulo_prime,
     order_modulo_n,
+    order_modulo_power_of_2,
     primitive_root_modulo_n,
 )
 from py3nt.core.factorize import FactorizationFactory
@@ -24,6 +25,13 @@ def test_order() -> None:
     assert order_modulo_n(a=3, n=14, factorizer=factorizer) == 6
     assert order_modulo_n(a=597, n=1001, factorizer=factorizer) == 30
     assert order_modulo_n(a=12, n=169, factorizer=factorizer) == 26
+
+    with pytest.raises(ValueError):
+        order_modulo_power_of_2(a=4, k=1)
+
+    assert order_modulo_power_of_2(a=3, k=3) == 2
+    assert order_modulo_power_of_2(a=5, k=4) == 4
+    assert order_modulo_power_of_2(a=17, k=4) == 1
 
 
 def test_primitive_root_modulo_prime() -> None:
