@@ -12,6 +12,14 @@ py3nt.congruence.basics module
    :undoc-members:
    :show-inheritance:
 
+py3nt.congruence.binomial module
+--------------------------------
+
+.. automodule:: py3nt.congruence.binomial
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 py3nt.congruence.primitives module
 ----------------------------------
 
