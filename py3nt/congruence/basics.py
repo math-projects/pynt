@@ -71,6 +71,9 @@ def inverse(a: int, n: int, is_prime: bool = False) -> int:
         If :math:`\gcd(a,n) > 1` or :math:`n<2`.
     """
 
+    a = int(a)
+    n = int(n)
+
     if n <= 1:
         raise ValueError("n must be at least 2.")
 
