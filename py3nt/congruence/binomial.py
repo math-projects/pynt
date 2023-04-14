@@ -12,7 +12,7 @@ def small_binomial_modulo_prime(
     n: int,
     k: int,
     p: int,
-    factorials: Optional[list[int] | np.ndarray] = None,
+    factorials: Optional[np.ndarray] = None,
 ) -> int:
     r"""
 
@@ -24,7 +24,7 @@ def small_binomial_modulo_prime(
         An integer.
     p : ``int``
         A prime.
-    factorials : ``Optional[list[int]  |  np.ndarray], optional``
+    factorials : ``Optional[np.ndarray], optional``
         Array of precalculated factorials :math:`\pmod{p}`., by default ``None``
 
     Returns
