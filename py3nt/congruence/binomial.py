@@ -89,7 +89,7 @@ def binomial_modulo_small_prime(n: int, k: int, p: int) -> int:
         An integer.
     p : ``int``
         A prime.
-    factorials : ``Optional[list[int]  |  np.ndarray], optional``
+    factorials : ``np.ndarray, optional``
         Array of precalculated factorials :math:`\pmod{p}`., by default ``None``
 
     Returns
