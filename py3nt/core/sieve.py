@@ -10,8 +10,10 @@ from py3nt.core.base import BaseSieve
 
 @dataclass
 class SieveOfEratosthenes(BaseSieve):
-    """
+    r"""
     Sieve of Eratosthenes for generating primes.
+    Usually used for factorizing by division of primes not exceeding :math:`\sqrt{n}`.
+    So, in most cases ``limit`` should be set to :math:`\ceil{\sqrt{n}}`.
 
     Methods
     -------
@@ -38,8 +40,9 @@ class SieveOfEratosthenes(BaseSieve):
 
 @dataclass
 class SieveOfEratosthenesOptimized(BaseSieve):
-    """
-    We can store smallest prime factors for logn factorization.
+    r"""
+    We can store smallest prime factors for :math:`\log{n}` factorization.
+    Therefore, :math:`n` must be in sieve range.
 
     Methods
     -------
