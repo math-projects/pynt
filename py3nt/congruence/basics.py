@@ -95,7 +95,8 @@ def inverse(a: int, n: int, is_prime: bool = False) -> int:
 
 def chinese_remainder_theorem(r: Sequence[int], m: Sequence[int]) -> int:
     r"""Chinese Remainder Theorem.
-    Given :math:`x\equiv r_{i}\pmod{m_{i}}` where :math:`\gcd(m_{i},m_{j})=1` for :math:`i\neq j`.
+    Given :math:`x\equiv r_{i}\pmod{m_{i}}` where :math:`\gcd(m_{i},m_{j})=1`
+    for :math:`i\neq j`.
 
     Parameters
     ----------

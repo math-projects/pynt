@@ -117,7 +117,7 @@ def binomial_coefficient(n: int, k: int) -> int:
 
 
 def generate_binomial_coefficients(n: int) -> np.ndarray:
-    r"""Generate binomial coefficients :math:`\binom{i}{j}` for :math:`0\leq j\leq i\leq n`.
+    r"""Generate binomial coefficients :math:`\binom{i}{j}` for :math:`0\leq j\leq i\leq n`
     Use Pascal's rule to generate the coefficients.
 
     Parameters
