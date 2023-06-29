@@ -14,7 +14,8 @@ def jordan(
     factorization: Optional[dict[int, int]] = None,
 ) -> int:
     r"""Calculate Jordan's Totient function of :math:`n`:
-    The number of positive integer tuples :math:`(a_{1},\ldots,a_{k})` not exceeding :math:`n`.
+    The number of positive integer tuples :math:`(a_{1},\ldots,a_{k})`
+    not exceeding :math:`n`.
     A generation of Euler's Totient function.
 
     .. math::
@@ -72,14 +73,15 @@ def carmichael(
 ) -> int:
     r"""Carmichael function :math:`\lambda(n)`.
     Also known as the universal exponent :math:`\pmod{n}`.
-    Calculated using the prime factorization of :math:`n=p_{1}^{e_{1}}\cdots p_{k}^{e_{k}}`.
+    Calculated using the prime factorization of :math:`n=p_{1}^{e_{1}}\cdots p_{k}^{e_{k}}`
 
     .. math::
         \lambda(2^{k+2}) = 2^{k}\\
         \lambda(p^{k}) = p^{k-1}(p-1)\\
         \lambda(ab) = \mbox{lcm}(\lambda(a), \lambda(b))
 
-    if :math:`p` is an odd prime and :math:`\gcd(a,b)=1`. Use this on the prime factorization.
+    if :math:`p` is an odd prime and :math:`\gcd(a,b)=1`.
+    Use this on the prime factorization.
 
     Parameters
     ----------

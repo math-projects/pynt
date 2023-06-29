@@ -86,7 +86,8 @@ class SieveSqrtFactorization(BaseSieveFactorization):
     Methods
     -------
     factorize:
-        Factorize a positive integer using sieve generated primes not exceeding :math:`\sqrt{n}`.
+        Factorize a positive integer using sieve generated primes
+        not exceeding :math:`\sqrt{n}`.
     """
 
     def factorize(self, n: int) -> dict[int, int]:

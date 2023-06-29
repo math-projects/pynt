@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py3nt"
-version = "2.1.24"
+version = "2.1.25"
 description = "A Number Theory Library for Python 3"
 authors = ["Masum Billal <billalmasum93@gmail.com>"]
 
@@ -27,6 +27,10 @@ black = "*"
 bandit = "*"
 flake8 = "*"
 isort = "*"
+
+[tool.ruff]
+line-length = 91
+
 
 
 [tool.poetry.group.dev.dependencies]
