@@ -11,7 +11,7 @@ repository = "https://github.com/math-projects/pynt"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-numpy = ">=1.24.2"
+numpy = "^1"
 sympy = ">=1.11"
 
 [tool.poetry.group.docs]
