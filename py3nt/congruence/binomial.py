@@ -1,6 +1,5 @@
 """Congruence of binomial coefficients"""
 
-from typing import Optional
 
 import numpy as np
 
@@ -12,7 +11,7 @@ def small_binomial_modulo_prime(
     n: int,
     k: int,
     p: int,
-    factorials: Optional[np.ndarray] = None,
+    factorials: None | np.ndarray = None,
 ) -> int:
     r"""
 
@@ -57,7 +56,9 @@ def small_binomial_modulo_prime(
         factorials = np.empty(shape=(n + 1,), dtype=int)
         factorials[0] = 1
         for i in range(1, n + 1):
-            factorials[i] = Integer(i).multiply_modular(other=factorials[i - 1], modulus=p)
+            factorials[i] = Integer(i).multiply_modular(
+                other=factorials[i - 1], modulus=p
+            )
 
     rem = Integer(factorials[n]).multiply_modular(
         other=inverse(a=factorials[k], n=p, is_prime=True), modulus=p

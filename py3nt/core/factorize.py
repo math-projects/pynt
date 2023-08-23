@@ -208,7 +208,9 @@ class FactorizationFactory:
         if not self.with_sieve:
             return NaiveSqrtFactorization()
         if np.less_equal(self.N, MAX_LOGN_FACTORIZATION_LIMIT):
-            return LognSieveFactorization(sieve=SieveOfEratosthenesOptimized(limit=self.N))
+            return LognSieveFactorization(
+                sieve=SieveOfEratosthenesOptimized(limit=self.N)
+            )
         if np.less_equal(self.N, LARGEST_SMALL_NUMBER):
             return SieveSqrtFactorization(
                 sieve=SieveOfEratosthenes(limit=int(np.floor(np.sqrt(self.N * 1.0))))

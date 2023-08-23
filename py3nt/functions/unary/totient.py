@@ -1,6 +1,5 @@
 """Totient functions"""
 
-from typing import Optional
 
 import numpy as np
 
@@ -10,8 +9,8 @@ from py3nt.core.factorize import FactorizationFactory
 def jordan(
     n: int,
     k: int,
-    factorizer: Optional[FactorizationFactory] = None,
-    factorization: Optional[dict[int, int]] = None,
+    factorizer: None | FactorizationFactory = None,
+    factorization: None | dict[int, int] = None,
 ) -> int:
     r"""Calculate Jordan's Totient function of :math:`n`:
     The number of positive integer tuples :math:`(a_{1},\ldots,a_{k})`
@@ -68,8 +67,8 @@ def jordan(
 
 def carmichael(
     n: int,
-    factorizer: Optional[FactorizationFactory] = None,
-    factorization: Optional[dict[int, int]] = None,
+    factorizer: None | FactorizationFactory = None,
+    factorization: None | dict[int, int] = None,
 ) -> int:
     r"""Carmichael function :math:`\lambda(n)`.
     Also known as the universal exponent :math:`\pmod{n}`.

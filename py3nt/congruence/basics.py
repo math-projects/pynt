@@ -1,4 +1,4 @@
-"""some basic functions in modular arithmetic"""
+"""Some basic functions in modular arithmetic."""
 
 from typing import Sequence
 

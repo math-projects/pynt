@@ -154,7 +154,9 @@ def order_modulo_n(
     for prime, multiplicity in factorization.items():
         order = np.lcm(
             order,
-            order_modulo_prime_power(a=a, p=prime, e=multiplicity, factorizer=factorizer),
+            order_modulo_prime_power(
+                a=a, p=prime, e=multiplicity, factorizer=factorizer
+            ),
         )
 
     return order

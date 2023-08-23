@@ -1,6 +1,5 @@
-"""Divisor functions"""
+"""Divisor functions."""
 
-from typing import Optional
 
 import numpy as np
 
@@ -11,8 +10,8 @@ from py3nt.polynomial.binomial import homogeneous_binomial
 def sigma_kth(
     n: int,
     k: int,
-    factorizer: Optional[FactorizationFactory],
-    factorization: Optional[dict[int, int]] = None,
+    factorizer: FactorizationFactory | None,
+    factorization: None | dict[int, int] = None,
 ) -> int:
     r"""Calculate the divisor sum function :math:`\sigma_{k}(n)=\sum_{d\mid n}d^{k}`.
 
@@ -43,7 +42,9 @@ def sigma_kth(
 
         divisor_sigma = 1
         for prime, multiplicity in factorization.items():
-            divisor_sigma *= homogeneous_binomial(a=pow(prime, k), b=1, n=multiplicity + 1)
+            divisor_sigma *= homogeneous_binomial(
+                a=pow(prime, k), b=1, n=multiplicity + 1
+            )
 
         return divisor_sigma
 
@@ -62,8 +63,8 @@ def sigma_kth(
 
 def number_of_divisors(
     n: int,
-    factorizer: Optional[FactorizationFactory],
-    factorization: Optional[dict[int, int]] = None,
+    factorizer: None | FactorizationFactory,
+    factorization: None | dict[int, int] = None,
 ) -> int:
     """
 
@@ -87,8 +88,8 @@ def number_of_divisors(
 
 def sum_of_divisors(
     n: int,
-    factorizer: Optional[FactorizationFactory],
-    factorization: Optional[dict[int, int]] = None,
+    factorizer: None | FactorizationFactory,
+    factorization: None | dict[int, int] = None,
 ) -> int:
     """
 
@@ -112,8 +113,8 @@ def sum_of_divisors(
 
 def generate_divisors(
     n: int,
-    factorizer: Optional[FactorizationFactory] = None,
-    factorization: Optional[dict[int, int]] = None,
+    factorizer: None | FactorizationFactory = None,
+    factorization: None | dict[int, int] = None,
 ) -> np.ndarray:
     r"""Generate all positive divisors of a positive integer.
 

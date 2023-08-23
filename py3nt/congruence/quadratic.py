@@ -1,4 +1,4 @@
-"""Quadratic residues and symbols"""
+"""Quadratic residues and symbols."""
 
 
 import numpy as np
