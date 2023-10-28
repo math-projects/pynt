@@ -71,6 +71,7 @@ def jacobi_symbol(a: int, n: int) -> int:
         return 0
 
     jacobi = 1
+
     while a != 0:
         while (a & 1) == 0 and a > 0:
             a >>= 1
@@ -80,4 +81,5 @@ def jacobi_symbol(a: int, n: int) -> int:
         if a % 4 == n % 4 == 3:
             jacobi = -jacobi
         a %= n
+
     return jacobi

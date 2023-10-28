@@ -1,3 +1,7 @@
+# Main CI for github actions
+
+permissions: read-all
+
 name: Upload Code Coverage to Codecov
 
 on:
@@ -19,6 +23,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Trunk Check
+        uses: trunk-io/trunk-action@v1
       - name: Generate coverage report
         run: |
           pip install -U pip
