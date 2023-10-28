@@ -31,7 +31,6 @@ isort = "*"
 line-length = 91
 
 
-
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.0.1"
 
