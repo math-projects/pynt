@@ -1,6 +1,5 @@
 """Define primality tests"""
 
-from random import randint
 
 import numpy as np
 from sympy.ntheory.primetest import mr
@@ -104,9 +103,9 @@ def solovay_strassen(n: int, max_iter: int = 10) -> bool:
     logn = int(np.floor(np.log(n * 1.0)))
 
     for _ in range(max_iter):
-        a = randint(
-            a=2,
-            b=int(
+        a = np.random.randint(
+            low=2,
+            high=int(
                 np.minimum(
                     n - 2,
                     2 * logn * logn,

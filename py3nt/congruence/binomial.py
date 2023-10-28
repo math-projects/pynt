@@ -8,10 +8,7 @@ from py3nt.numbers.integer import Integer
 
 
 def small_binomial_modulo_prime(
-    n: int,
-    k: int,
-    p: int,
-    factorials: None | np.ndarray = None,
+    n: int, k: int, p: int, factorials: None | np.ndarray = None
 ) -> int:
     r"""
 

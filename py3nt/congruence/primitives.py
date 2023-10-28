@@ -115,11 +115,7 @@ def order_modulo_prime_power(
     return order
 
 
-def order_modulo_n(
-    a: int,
-    n: int,
-    factorizer: FactorizationFactory,
-) -> int:
+def order_modulo_n(a: int, n: int, factorizer: FactorizationFactory) -> int:
     r"""Caculate :math:`\mbox{ord}_{n}(a)`.
     The smallest positive integer such that
 

@@ -1,3 +1,6 @@
+# Main CI for github actions
+permissions: read-all
+
 name: Upload Code Coverage to Codecov
 
 on:
